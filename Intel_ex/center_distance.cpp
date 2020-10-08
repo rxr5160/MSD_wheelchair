@@ -6,12 +6,13 @@ int main(){
 
 	// Create a Pipeline - this serves as a top-level API for streaming and processing frames
 	rs2::pipeline p;
+	//p.start();
 //replace p.start()
 //allows capture from pre-recorded image
 	rs2::config cfg;
-	cfg.enable_device_from_file("stairs.bag");
+	cfg.enable_device_from_file("/home/radicello/Downloads/stairs.bag");
 	p.start(cfg);
-//
+
 
 	while(1){
 			// Block program until frames arrive
