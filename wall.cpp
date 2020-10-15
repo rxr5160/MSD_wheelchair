@@ -32,15 +32,18 @@ int main(){
 			float total_dist = 0;
 			for(int i_w = 0; i_w < width; i_w++){
 				for(int i_h = 0; i_h < height; i_h++){
-					total_dist = depth.get_distance(i_w, i_h);
+					total_dist = total_dist + depth.get_distance(i_w, i_h);
 				}
 			}
 			float avg_dist = total_dist / total_pixel;
 
 			// Print if wall
 			if (avg_dist <= 1){
-				std::cout << "\rWALL" << avg_dist << " meters away!";
+				std::cout << "\rWALL" << avg_dist << " meters away!\n";
 			}
+            else{
+                std::cout << "\rAvg Dist" << avg_dist << " meters\n";
+            }
 	}
 return 0;
 }
