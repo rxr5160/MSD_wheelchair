@@ -6,6 +6,7 @@
 /** compile with::
 *
 *    g++ -std=c++11 <filename> -lrealsense2
+*       -DABS if you want raw quadrent distance
 *
 **/
 
@@ -187,19 +188,21 @@ int main(){
 			quadrents[15] = quadrents[15] / (total_pixel/16);
 
             //print avg dists for quadrents
-          /*
+
+#ifdef ABS
             std::cout << "============================\n";
 			std::cout << quadrents[0] << " " << quadrents[1] << " " << quadrents[2] << " " << quadrents[3] << "\n";
 			std::cout << quadrents[4] << " " << quadrents[5] << " " << quadrents[6] << " " << quadrents[7] << "\n";
 			std::cout << quadrents[8] << " " << quadrents[9] << " " << quadrents[10] << " " << quadrents[11] << "\n";
 			std::cout << quadrents[12] << " " << quadrents[13] << " " << quadrents[14] << " " << quadrents[15] << "\n";
-          */
-
+#endif
+#ifndef ABS
             for (int c=0; c < 16; c++){
                 if (quadrents[c] < THRESH) {
                     std::cout << "somethig close in Q" << c << "\n";
                 }
             }
+#endif
 
 /*
 			// Print if wall
