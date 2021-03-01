@@ -9,6 +9,17 @@
 *
 **/
 
+
+//TODO add detailed blockage print
+/**
+*   o | o | x | x
+*   o | o | x | x
+* kinda thing
+* 
+* side notif for where there is a block
+*
+**/
+
 #define THRESH 0.5
 
 
