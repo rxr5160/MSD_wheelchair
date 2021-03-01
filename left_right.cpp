@@ -34,45 +34,147 @@ int main(){
 			float height = depth.get_height();
 
             //get thirds
-            float left_div = width/3;
-            float right_div = (width/3) + left_div;
+            float div = width/4;
 
 			// Query the distance from the camera to the object in the
 			//		center of the image
 			float total_pixel = width * height;
-			float left_dist = 0;
-            float mid_dist = 0;
-            float right_dist = 0;
+			float quadrents[16] = {0};
 
           // std::cout << "width=" << width << " left=" << left_div << "right=" << right_div << "\n";
 
-            //measure left
-			for(int i_w = 0; i_w < left_div; i_w++){
-				for(int i_h = 0; i_h < height; i_h++){
-					left_dist = left_dist + depth.get_distance(i_w, i_h);
+            //measure Q0
+			for(int i_w = 0; i_w < div; i_w++){
+				for(int i_h = 0; i_h < div; i_h++){
+					quadrents[0] = quadrents[0] + depth.get_distance(i_w, i_h);
 				}
 			}
-			float avg_ldist = left_dist / (total_pixel/3);
+			quadrents[0] = quadrents[0] / (total_pixel/16);
 
-            //measure mid
-			for(int i_w = left_div; i_w < right_div; i_w++){
-				for(int i_h = 0; i_h < height; i_h++){
-					mid_dist = mid_dist + depth.get_distance(i_w, i_h);
+            //measure Q1
+			for(int i_w = div; i_w < (div*2); i_w++){
+				for(int i_h = 0; i_h < div; i_h++){
+					quadrents[1] = quadrents[1] + depth.get_distance(i_w, i_h);
 				}
 			}
-			float avg_mdist = mid_dist / (total_pixel/3);
+			quadrents[1] = quadrents[1] / (total_pixel/16);
 
-            //measure right
-			for(int i_w = right_div; i_w < width; i_w++){
-				for(int i_h = 0; i_h < height; i_h++){
-					right_dist = right_dist + depth.get_distance(i_w, i_h);
+            //measure Q2
+			for(int i_w = (div*2); i_w < (div*3); i_w++){
+				for(int i_h = 0; i_h < div; i_h++){
+					quadrents[2] = quadrents[2] + depth.get_distance(i_w, i_h);
 				}
 			}
-			float avg_rdist = right_dist / (total_pixel/3);
+			quadrents[2] = quadrents[2] / (total_pixel/16);
+
+            //measure Q3
+			for(int i_w = (div*3); i_w < width; i_w++){
+				for(int i_h = 0; i_h < div; i_h++){
+					quadrents[3] = quadrents[3] + depth.get_distance(i_w, i_h);
+				}
+			}
+			quadrents[3] = quadrents[3] / (total_pixel/16);
+
+            //measure Q4
+			for(int i_w = 0; i_w < div; i_w++){
+				for(int i_h = div; i_h < (div*2); i_h++){
+					quadrents[4] = quadrents[4] + depth.get_distance(i_w, i_h);
+				}
+			}
+			quadrents[4] = quadrents[4] / (total_pixel/16);
+
+            //measure Q5
+			for(int i_w = div; i_w < (div*2); i_w++){
+				for(int i_h = div; i_h < (div*2); i_h++){
+					quadrents[5] = quadrents[5] + depth.get_distance(i_w, i_h);
+				}
+			}
+			quadrents[5] = quadrents[5] / (total_pixel/16);
+
+            //measure Q6
+			for(int i_w = (div*2); i_w < (div*3); i_w++){
+				for(int i_h = div; i_h < (div*2); i_h++){
+					quadrents[6] = quadrents[6] + depth.get_distance(i_w, i_h);
+				}
+			}
+			quadrents[6] = quadrents[6] / (total_pixel/16);
+
+            //measure Q7
+			for(int i_w = (div*3); i_w < width; i_w++){
+				for(int i_h = div; i_h < (div*2); i_h++){
+					quadrents[7] = quadrents[7] + depth.get_distance(i_w, i_h);
+				}
+			}
+			quadrents[7] = quadrents[7] / (total_pixel/16);
+
+            //measure Q8
+			for(int i_w = 0; i_w < div; i_w++){
+				for(int i_h = (div*2); i_h < (div*3); i_h++){
+					quadrents[8] = quadrents[8] + depth.get_distance(i_w, i_h);
+				}
+			}
+			quadrents[8] = quadrents[8] / (total_pixel/16);
+
+            //measure Q9
+			for(int i_w = div; i_w < (div*2); i_w++){
+				for(int i_h = (div*2); i_h < (div*3); i_h++){
+					quadrents[9] = quadrents[9] + depth.get_distance(i_w, i_h);
+				}
+			}
+			quadrents[9] = quadrents[9] / (total_pixel/16);
+
+            //measure Q10
+			for(int i_w = (div*2); i_w < (div*3); i_w++){
+				for(int i_h = (div*2); i_h < (div*3); i_h++){
+					quadrents[10] = quadrents[10] + depth.get_distance(i_w, i_h);
+				}
+			}
+			quadrents[10] = quadrents[10] / (total_pixel/16);
+
+            //measure Q11
+			for(int i_w = (div*3); i_w < width; i_w++){
+				for(int i_h = (div*2); i_h < (div*3); i_h++){
+					quadrents[11] = quadrents[11] + depth.get_distance(i_w, i_h);
+				}
+			}
+			quadrents[11] = quadrents[11] / (total_pixel/16);
+
+            //measure Q12
+			for(int i_w = 0; i_w < div; i_w++){
+				for(int i_h = (div*3); i_h < height; i_h++){
+					quadrents[12] = quadrents[12] + depth.get_distance(i_w, i_h);
+				}
+			}
+			quadrents[12] = quadrents[12] / (total_pixel/16);
+
+            //measure Q13
+			for(int i_w = div; i_w < (div*2); i_w++){
+				for(int i_h = (div*3); i_h < height; i_h++){
+					quadrents[13] = quadrents[13] + depth.get_distance(i_w, i_h);
+				}
+			}
+			quadrents[13] = quadrents[13] / (total_pixel/16);
+
+            //measure Q14
+			for(int i_w = (div*2); i_w < (div*3); i_w++){
+				for(int i_h = (div*3); i_h < height; i_h++){
+					quadrents[14] = quadrents[14] + depth.get_distance(i_w, i_h);
+				}
+			}
+			quadrents[14] = quadrents[14] / (total_pixel/16);
+
+            //measure Q15
+			for(int i_w = (div*3); i_w < width; i_w++){
+				for(int i_h = (div*3); i_h < height; i_h++){
+					quadrents[15] = quadrents[15] + depth.get_distance(i_w, i_h);
+				}
+			}
+			quadrents[15] = quadrents[15] / (total_pixel/16);
+
 
             //print avg dists for sides
-            std::cout << "\rLEFT: " << avg_ldist << " MID: " << avg_mdist << " RIGHT: " << avg_rdist;
-
+            //std::cout << "\rLEFT: " << avg_ldist << " MID: " << avg_mdist << " RIGHT: " << avg_rdist;
+			std::cout << quadrents;
 
 /*
 			// Print if wall
