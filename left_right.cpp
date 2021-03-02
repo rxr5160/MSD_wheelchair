@@ -7,19 +7,10 @@
 *
 *    g++ -std=c++11 <filename> -lrealsense2
 *       -DABS if you want raw quadrent distance
+*		-DDET if want grid of blockage
 *
 **/
 
-
-//TODO add detailed blockage print
-/**
-*   o | o | x | x
-*   o | o | x | x
-* kinda thing
-* 
-* side notif for where there is a block
-*
-**/
 
 #define THRESH 0.5
 
@@ -187,6 +178,18 @@ int main(){
 			}
 			quadrents[15] = quadrents[15] / (total_pixel/16);
 
+		//determine blockage in quadrents
+			char fill[16] = {'O'};
+            for (int c=0; c < 16; c++){
+                if (quadrents[c] < THRESH) {
+                	char[c] = 'X';
+				}
+				else {
+					char[c] = 'O';
+				}
+            }
+
+
             //print avg dists for quadrents
 
 #ifdef ABS
@@ -196,12 +199,47 @@ int main(){
 			std::cout << quadrents[8] << " " << quadrents[9] << " " << quadrents[10] << " " << quadrents[11] << "\n";
 			std::cout << quadrents[12] << " " << quadrents[13] << " " << quadrents[14] << " " << quadrents[15] << "\n";
 #endif
+
+#ifdef DET
+		for (int v=0; v < 16; v++) {
+			std::cout << fill[0] << " | " << fill[1] << " | " << fill[2] << " | " << fill[3] << "\n";
+			std::cout << "--------------\n";
+			std::cout << fill[4] << " | " << fill[5] << " | " << fill[6] << " | " << fill[7] << "\n";
+			std::cout << "--------------\n";
+			std::cout << fill[8] << " | " << fill[9] << " | " << fill[10] << " | " << fill[11] << "\n";
+			std::cout << "--------------\n";
+			std::cout << fill[12] << " | " << fill[13] << " | " << fill[14] << " | " << fill[15] << "\n";
+			std::cout << "--------------\n";
+		}			
+#endif
+
 #ifndef ABS
-            for (int c=0; c < 16; c++){
+  #ifndef DET
+			//left
+            for (int c=0; c < 16; c+=4){
                 if (quadrents[c] < THRESH) {
-                    std::cout << "somethig close in Q" << c << "\n";
+                    std::cout << "somethig close on left side" << c << "\n";
                 }
             }
+			//right
+			for (int c=3; c < 16; c+=4){
+                if (quadrents[c] < THRESH) {
+                    std::cout << "somethig close on right side" << c << "\n";
+                }
+            }
+			//center left
+			for (int c=1; c < 16; c+=4){
+                if (quadrents[c] < THRESH) {
+                    std::cout << "somethig close on lcenter" << c << "\n";
+                }
+            }
+			//center right
+			for (int c=2; c < 16; c+=4){
+                if (quadrents[c] < THRESH) {
+                    std::cout << "somethig close on rcenter" << c << "\n";
+                }
+            }
+  #endif
 #endif
 
 /*
