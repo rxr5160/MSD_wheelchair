@@ -219,24 +219,28 @@ int main(){
             for (int c=0; c < 16; c+=4){
                 if (quadrents[c] < THRESH) {
                     std::cout << "somethig close on left side" << c << "\n";
+					std::cout << "==turn to the right==\n";
                 }
             }
 			//right
 			for (int c=3; c < 16; c+=4){
                 if (quadrents[c] < THRESH) {
                     std::cout << "somethig close on right side" << c << "\n";
+					std::cout << "==turn to the left==\n";
                 }
             }
 			//center left
 			for (int c=1; c < 16; c+=4){
                 if (quadrents[c] < THRESH) {
                     std::cout << "somethig close on lcenter" << c << "\n";
+					std::cout << "==turn to the right==\n";
                 }
             }
 			//center right
 			for (int c=2; c < 16; c+=4){
                 if (quadrents[c] < THRESH) {
                     std::cout << "somethig close on rcenter" << c << "\n";
+					std::cout << "==turn to the left==\n";
                 }
             }
   #endif
