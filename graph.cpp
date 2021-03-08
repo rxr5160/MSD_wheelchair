@@ -32,7 +32,7 @@ void printGraph(vector<pair<int,int> > adj[], int V)
 }
 
 // Driver code
-vector<pair<int, int>>[] create_node_list()
+vector<pair<int, int> >* create_node_list()
 {
 	int V = 5; //number of nodes
 	vector<pair<int, int> > adj[V];
@@ -45,13 +45,13 @@ vector<pair<int, int>>[] create_node_list()
 
 
 int main(){
-	vector<pair<int,int>> adj[] = create_node_list();
-	int p[32] = path(adj, 0, 1);
+	vector<pair<int,int> >* adj = create_node_list();
+/*	int p[32] = path(adj, 0, 1);
 	for (int x : p) {
 		std::cout << x << ", ";
 	}
 	std::cout <<"\n";
-	delete[] p;
+	delete[] p;*/
 }
 
 
