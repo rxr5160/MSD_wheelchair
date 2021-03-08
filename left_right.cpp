@@ -48,8 +48,6 @@ int main(){
 			float total_pixel = width * height;
 			float quadrents[16] = {0};
 
-          // std::cout << "width=" << width << " left=" << left_div << "right=" << right_div << "\n";
-
             //measure Q0
 			for(int i_w = 0; i_w < wdiv; i_w++){
 				for(int i_h = 0; i_h < hdiv; i_h++){
@@ -178,22 +176,21 @@ int main(){
 			}
 			quadrents[15] = quadrents[15] / (total_pixel/16);
 
-		//determine blockage in quadrents
+		    //determine blockage in quadrents
 			char fill[16] = {'O'};
             for (int c=0; c < 16; c++){
                 if (quadrents[c] < THRESH) {
-                	char[c] = 'X';
+                	fill[c] = 'X';
 				}
 				else {
-					char[c] = 'O';
+					fill[c] = 'O';
 				}
             }
-
 
             //print avg dists for quadrents
 
 #ifdef ABS
-            std::cout << "============================\n";
+            std::cout << "============================\n\n";
 			std::cout << quadrents[0] << " " << quadrents[1] << " " << quadrents[2] << " " << quadrents[3] << "\n";
 			std::cout << quadrents[4] << " " << quadrents[5] << " " << quadrents[6] << " " << quadrents[7] << "\n";
 			std::cout << quadrents[8] << " " << quadrents[9] << " " << quadrents[10] << " " << quadrents[11] << "\n";
@@ -209,8 +206,8 @@ int main(){
 			std::cout << fill[8] << " | " << fill[9] << " | " << fill[10] << " | " << fill[11] << "\n";
 			std::cout << "--------------\n";
 			std::cout << fill[12] << " | " << fill[13] << " | " << fill[14] << " | " << fill[15] << "\n";
-			std::cout << "--------------\n";
-		}			
+			std::cout << "--------------\n\n";
+		}
 #endif
 
 #ifndef ABS
