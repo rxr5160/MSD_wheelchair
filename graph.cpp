@@ -3,6 +3,7 @@
 // representation of graph
 #include <bits/stdc++.h>
 using namespace std;
+#include "traversal.h"
 
 // To add an edge
 void addEdge(vector <pair<int, int> > adj[], int u,
@@ -33,7 +34,7 @@ void printGraph(vector<pair<int,int> > adj[], int V)
 // Driver code
 vector<pair<int, int>>[] create_node_list()
 {
-	int V = 5;
+	int V = 5; //number of nodes
 	vector<pair<int, int> > adj[V];
 	// addEdge(list, node, adjacent_node, weight)
     addEdge(adj, 0, 1, 10);
@@ -41,4 +42,17 @@ vector<pair<int, int>>[] create_node_list()
 
     return adj;
 }
+
+
+int main(){
+	vector<pair<int,int>> adj[] = create_node_list();
+	int p[32] = path(adj, 0, 1);
+	for (int x : p) {
+		std::cout << x << ", ";
+	}
+	std::cout <<"\n";
+	delete[] p;
+}
+
+
 
