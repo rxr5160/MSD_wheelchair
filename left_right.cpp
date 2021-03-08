@@ -236,6 +236,8 @@ int main(){
 	//rs2::config cfg;
 	//cfg.enable_stream(RS2_STREAM_DEPTH);
 	//p.start(cfg);
+
+    int count = 0;
     rs2::pose_frame pose_frame(nullptr);
     std::vector<rs2_vector> trajectory;
     rs2::context                          ctx;        // Create librealsense context for managing devices
@@ -285,6 +287,17 @@ int main(){
                         trajectory.push_back(pose_data.translation);
                     }
                 }
+
+                /* Attempt to reset the POSE of the tracking camera to x,y,z 0,0,0. This causes core dump
+                if(count == 10){
+                    pipe.stop();
+                    pipe.start();
+                    count = 0;
+                }
+                else{
+                    count++;
+                }
+                */
             }
 
             auto depth = frames.get_depth_frame();
