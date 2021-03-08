@@ -52,7 +52,7 @@ vector<pair<int, int> >* create_node_list()
 
 int main(){
 	vector<pair<int,int> >* adj = create_node_list();
-	int *p = path(adj, 0, 1);
+	int *p = path(adj, 0, 4);
 	for (int x=0; x < 5; x++) {
 		std::cout << p[x] << ", ";
 	}

@@ -57,7 +57,8 @@ int* path (vector<pair<int,int> > *adj, int startPoint, int endPoint) {
 			return p;
 		}
 
-		if (u != startPoint && visted[u]!=1) { //skip zero for now
+		//if (u != startPoint && visited[u]!=1) { //skip zero for now
+		if (visited[u]!=1) { //skip zero for now
 			int minDist = INT_MAX;
 			int minNode;
 			pathPoint++;
@@ -69,7 +70,7 @@ int* path (vector<pair<int,int> > *adj, int startPoint, int endPoint) {
 				}
 			}
 			p[pathPoint] = minNode;
-			visted[u] = 1;
+			visited[u] = 1;
 		}
 	}
 	return p;
