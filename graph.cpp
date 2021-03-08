@@ -46,12 +46,12 @@ vector<pair<int, int> >* create_node_list()
 
 int main(){
 	vector<pair<int,int> >* adj = create_node_list();
-/*	int p[32] = path(adj, 0, 1);
-	for (int x : p) {
-		std::cout << x << ", ";
+	int *p = path(adj, 0, 1);
+	for (int x=0; x < 5; x++) {
+		std::cout << p[x] << ", ";
 	}
 	std::cout <<"\n";
-	delete[] p;*/
+	delete[] p;
 }
 
 
