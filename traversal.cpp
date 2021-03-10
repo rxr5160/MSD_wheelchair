@@ -6,6 +6,7 @@
 #include <climits>
 using namespace std;
 #include "traversal.h"
+#include "graph.h"
 
 
 /**
@@ -29,7 +30,6 @@ function Dijkstra(Graph, source):
   end function
 */
 
-
 int* path (vector<pair<int,int> > *adj, int startPoint, int endPoint) {
 	//path array
 	int *p = new int[MAXNODES];
@@ -40,15 +40,18 @@ int* path (vector<pair<int,int> > *adj, int startPoint, int endPoint) {
 	dist[startPoint] = 0; //distance from start to start is zero
 
 	//visited array
-	int visited[MAXNODES] = {0};
+	int visited[MAXNODES];
+
+    if(startPoint == endPoint){
+        return p;
+    }
 
 /**
  FOR NOW ASSUME START AT NODE 0
 **/
-
 	//for each node in graph
 	for (int u=0; u<MAXNODES; u++) {
-		int pathPoint = 0;
+		int pathPoint = 1;
 
         if (u == endPoint) {
 			//include end node
