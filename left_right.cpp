@@ -3,6 +3,8 @@
 #include <math.h>
 #include <iostream>
 #include <algorithm>            // std::min, std::max
+#include <thread>
+#include <chrono>
 
 /** compile with::
 *
@@ -14,7 +16,10 @@
 
 
 #define THRESH 0.5
+#define T265_SERIAL "8122110243"
+
 float quadrents[16] = {0};
+bool  reset_pose = false;
 
 void quadrant_distance(rs2::pipeline p){
     // Block program until frames arrive
@@ -237,12 +242,13 @@ int main(){
 	//cfg.enable_stream(RS2_STREAM_DEPTH);
 	//p.start(cfg);
 
-    int count = 0;
     rs2::pose_frame pose_frame(nullptr);
     std::vector<rs2_vector> trajectory;
     rs2::context                          ctx;        // Create librealsense context for managing devices
     //std::map<std::string, rs2::colorizer> colorizers; // Declare map from device serial number to colorizer
     std::vector<rs2::pipeline>            pipelines;
+    rs2::config                           t265_config;
+
 
     // Capture serial numbers before opening streaming
     std::vector<std::string>              serials;
@@ -258,8 +264,11 @@ int main(){
         cfg.enable_device(serial);
         pipe.start(cfg);
         pipelines.emplace_back(pipe);
-        // Map from each device's serial number to a different colorizer
-        //colorizers[serial] = rs2::colorizer();
+
+        if(serial.compare(T265_SERIAL) == 0){
+            std::cout << "Serial Found " << serial << "\n";
+            t265_config = cfg;
+        }
     }
 
     //Test grid system
@@ -288,16 +297,13 @@ int main(){
                     }
                 }
 
-                /* Attempt to reset the POSE of the tracking camera to x,y,z 0,0,0. This causes core dump
-                if(count == 10){
+                // Reset pose when needed
+                if(reset_pose){
                     pipe.stop();
-                    pipe.start();
-                    count = 0;
+                    std::this_thread::sleep_for(std::chrono::seconds(1));
+                    pipe.start(t265_config);
+                    reset_pose = false;
                 }
-                else{
-                    count++;
-                }
-                */
             }
 
             auto depth = frames.get_depth_frame();
@@ -316,7 +322,7 @@ int main(){
 
             #ifndef ABS
                 #ifndef DET
-                print_direction();
+                //print_direction();
                 #endif
             #endif
 
