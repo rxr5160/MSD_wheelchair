@@ -46,6 +46,7 @@ vector<pair<int, int> >* create_node_list()
 	int V = 5; //number of nodes
 	vector<pair<int, int> > *adj = (vector<pair<int, int> > *) malloc(sizeof(vector<pair<int, int> >)*V);
 	// addEdge(list, node, adjacent_node, weight)
+
     addEdge(adj, BRINKMAN, XEROX, 10);
     addEdge(adj, BRINKMAN, ROOM2340, 20);
     addEdge(adj, XEROX, ENGHALL, 30);
@@ -53,6 +54,15 @@ vector<pair<int, int> >* create_node_list()
     addEdge(adj, XEROX, ROOM2340, 50);
     addEdge(adj, ENGHALL, MECEOFFICE, 60);
     addEdge(adj, MECEOFFICE, ROOM2340, 70);
+/*
+    addEdge(adj, 0, 1, 10);
+    addEdge(adj, 0, 4, 20);
+    addEdge(adj, 1, 2, 30);
+    addEdge(adj, 1, 3, 40);
+    addEdge(adj, 1, 4, 50);
+    addEdge(adj, 2, 3, 60);
+    addEdge(adj, 3, 4, 70);
+*/
 	printGraph(adj, V);
 
     return adj;

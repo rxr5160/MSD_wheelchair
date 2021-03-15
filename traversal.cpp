@@ -36,11 +36,12 @@ int* path (vector<pair<int,int> > *adj, int startPoint, int endPoint) {
 	p[0] = startPoint;
 
 	//create distance array
-	int dist[MAXNODES] = {INT_MAX};
-	dist[startPoint] = 0; //distance from start to start is zero
+	//int dist[MAXNODES] = {INT_MAX};
+	//dist[startPoint] = 0; //distance from start to start is zero
 
 	//visited array
-	int visited[MAXNODES];
+	int visited[MAXNODES] = {0};
+    //visited[0] = 1;
 
     if(startPoint == endPoint){
         return p;
@@ -50,9 +51,10 @@ int* path (vector<pair<int,int> > *adj, int startPoint, int endPoint) {
  FOR NOW ASSUME START AT NODE 0
 **/
 	//for each node in graph
-	for (int u=0; u<MAXNODES; u++) {
-		int pathPoint = 1;
-
+	int pathPoint = 0; //increments before any changes are made for zero still skips the zero start index
+	//for (int u=0; u<MAXNODES; u++) {
+    int u = 0;
+    while(1) {
         if (u == endPoint) {
 			//include end node
             pathPoint++;
@@ -66,15 +68,24 @@ int* path (vector<pair<int,int> > *adj, int startPoint, int endPoint) {
 			int minNode;
 			pathPoint++;
 			for (auto it = adj[u].begin(); it!=adj[u].end(); it++) {
-				dist[it->first] = it->second; //assign distance to array -> ??? huh
-				if (minDist > it->second) {
-					minDist = it->second;
-					minNode = it->first;
-				}
+                if (visited[it->first] == 0) {
+				//dist[it->first] = it->second; //assign distance to array -> ??? huh
+                    if (minDist > it->second) {
+                        minDist = it->second;
+                        minNode = it->first;
+                    }
+                }
 			}
 			p[pathPoint] = minNode;
 			visited[u] = 1;
+            if (u == minNode){
+                break;
+              }
+            u = minNode;
 		}
+        else {
+            u++;
+        }
 	}
 	return p;
 }
