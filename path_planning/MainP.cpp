@@ -21,7 +21,7 @@ using namespace std;
 
 void testDijkstraGraph()
 {
-	Graph* my_graph_pt = new Graph("test_1");
+	Graph* my_graph_pt = new Graph("map");
 	DijkstraShortestPathAlg shortest_path_alg(my_graph_pt);
 	BasePath* result =
 		shortest_path_alg.get_shortest_path(
