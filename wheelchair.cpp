@@ -38,8 +38,6 @@ int main(){
     BasePath* result = get_shortest_path("path_planning/map_v2", 0, 6);
 	result->PrintOut(cout);
 
-    return 0;
-
     //Test grid system
 	while(1){
         for (auto &&pipe : pipelines){ // loop over pipelines
