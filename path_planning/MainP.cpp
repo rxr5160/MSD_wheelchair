@@ -21,11 +21,11 @@ using namespace std;
 
 void testDijkstraGraph()
 {
-	Graph* my_graph_pt = new Graph("map");
+	Graph* my_graph_pt = new Graph("map_v2");
 	DijkstraShortestPathAlg shortest_path_alg(my_graph_pt);
 	BasePath* result =
 		shortest_path_alg.get_shortest_path(
-			my_graph_pt->get_vertex(0), my_graph_pt->get_vertex(5));
+			my_graph_pt->get_vertex(0), my_graph_pt->get_vertex(6));
 	result->PrintOut(cout);
 }
 

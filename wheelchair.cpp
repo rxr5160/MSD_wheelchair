@@ -1,14 +1,9 @@
-#include <librealsense2/rs.hpp>
-#include <stdio.h>
-#include <math.h>
-#include <iostream>
-#include <algorithm>            // std::min, std::max
-#include <thread>
-#include <chrono>
 
 #include "wheelchair.h"
 
 bool reset_pose = false;
+
+BasePath* get_shortest_path(string map, int start, int end);
 
 int main(){
 
@@ -39,6 +34,11 @@ int main(){
             t265_config = cfg;
         }
     }
+
+    BasePath* result = get_shortest_path("path_planning/map_v2", 0, 6);
+	result->PrintOut(cout);
+
+    return 0;
 
     //Test grid system
 	while(1){
@@ -103,3 +103,13 @@ int main(){
     return 0;
 }
 
+BasePath* get_shortest_path(string map, int start, int end){
+
+	Graph* my_graph_pt = new Graph(map);
+	DijkstraShortestPathAlg shortest_path_alg(my_graph_pt);
+	BasePath* result =
+		shortest_path_alg.get_shortest_path(
+			my_graph_pt->get_vertex(start), my_graph_pt->get_vertex(end));
+
+    return result;
+}
