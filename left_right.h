@@ -7,7 +7,5 @@ void quadrant_distance(rs2::pipeline p);
 void print_distances();
 void print_marked_quadrents();
 void print_direction();
-void print_pose(auto pose_data);
-
 
 #endif /* LEFT_RIGHT_H */

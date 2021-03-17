@@ -230,9 +230,3 @@ void print_direction(){
     }
 
 }
-
-void print_pose(auto pose_data){
-
-    std::cout << "\r" << "Device Position: " << pose_data.translation.x << " : " << pose_data.translation.y << " : " << pose_data.translation.z << " (meters)\n\n";
-
-}
