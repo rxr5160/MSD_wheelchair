@@ -2,7 +2,7 @@
 MSD-21311 project, Mind-controlled Wheelchair
 
 <h3> (3/22) code structure of Wheelchair main </h3>
-	
+**NOTE**: Currently no communitcation code in the structure. It is being worked on. <br>
 
 - set global variables
 	- next node idx
