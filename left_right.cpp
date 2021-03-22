@@ -228,6 +228,7 @@ void print_direction(){
 	    	std::cout << "==turn to the left==\n";
         }
     }
+}
 
 int turn_direction(){
 	//left

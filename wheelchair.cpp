@@ -4,7 +4,7 @@
 bool reset_pose = false;
 int node_num = 0; //starting/current node idx
 int distance_traveled = 0; //total distance gone
-int distnce_togo = 0; //distance to next node
+int distance_togo = 0; //distance to next node
 
 BasePath* get_shortest_path(string map, int start, int end);
 void next_dist(BasePath* result);
@@ -73,7 +73,9 @@ int main(){
 				///
 				/// check distance traveled
 				if (pose_data.translation.z >= distance_togo) {
-					cout << "!! Reached node ID " + result->GetVertex(node_num)->GetID() + "\n";
+					cout << "!! Reached node ID ";
+                        cout << result->GetVertex(node_num)->getID();
+                        cout << "\r\n";
 					distance_traveled = distance_traveled + distance_togo; //== node wight
 					next_dist(result);
 					reset_pose = true;
@@ -145,7 +147,7 @@ int main(){
 
 
 void next_dist(BasePath* result) {
-	int d = result->GetVertext(node_num+1)->Weight(); //distance to next node
+	int d = result->GetVertex(node_num+1)->Weight(); //distance to next node
 	distance_togo = d - distance_traveled;
 	node_num++; //increment path index
 }
