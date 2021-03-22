@@ -229,4 +229,39 @@ void print_direction(){
         }
     }
 
+int turn_direction(){
+	//left
+    for (int c=0; c < 16; c+=4){
+        if (quadrents[c] < THRESH) {
+            //std::cout << "somethig close on left side" << c << "\n";
+			//std::cout << "==turn to the right==\n";
+			return 1;
+        }
+    }
+	//right
+	for (int c=3; c < 16; c+=4){
+        if (quadrents[c] < THRESH) {
+            //std::cout << "somethig close on right side" << c << "\n";
+		    //std::cout << "==turn to the left==\n";
+			return 2;
+        }
+    }
+	//center left
+    for (int c=1; c < 16; c+=4){
+        if (quadrents[c] < THRESH) {
+            //std::cout << "somethig close on lcenter" << c << "\n";
+			//std::cout << "==turn to the right==\n";
+			return 1;
+        }
+    }
+	//center right
+	for (int c=2; c < 16; c+=4){
+        if (quadrents[c] < THRESH) {
+            //std::cout << "somethig close on rcenter" << c << "\n";
+	    	//std::cout << "==turn to the left==\n";
+			return 2;
+        }
+    }
+	//nothing
+	return 0;
 }

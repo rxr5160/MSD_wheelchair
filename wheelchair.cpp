@@ -2,8 +2,12 @@
 #include "wheelchair.h"
 
 bool reset_pose = false;
+int node_num = 0; //starting/current node idx
+int distance_traveled = 0; //total distance gone
+int distnce_togo = 0; //distance to next node
 
 BasePath* get_shortest_path(string map, int start, int end);
+void next_dist(BasePath* result);
 
 int main(){
 
@@ -36,7 +40,9 @@ int main(){
     }
 
     BasePath* result = get_shortest_path("path_planning/map_v2", 0, 6);
-	result->PrintOut(cout);
+	//result->PrintOut(cout);
+
+	next_dist(result); // get distance to check against for next node distance
 
     //Test grid system
 	while(1){
@@ -64,12 +70,27 @@ int main(){
                     }
                 }
 
+				///
+				/// check distance traveled
+				if (pose_data.translation.z >= distance_togo) {
+					cout << "!! Reached node ID " + result->GetVertex(node_num)->GetID() + "\n";
+					distance_traveled = distance_traveled + distance_togo; //== node wight
+					next_dist(result);
+					reset_pose = true;
+				}
+				else{
+					cout << "not yet...\n";
+				}
+				///
+				///
+
                 // Reset pose when needed
                 if(reset_pose){
                     pipe.stop();
                     std::this_thread::sleep_for(std::chrono::seconds(1));
                     pipe.start(t265_config);
                     reset_pose = false;
+					next_dist(result);
                 }
             }
 
@@ -87,12 +108,33 @@ int main(){
                 print_marked_quadrents();
             #endif
 
-            #ifndef ABS
-                #ifndef DET
-                //print_direction();
-                #endif
-            #endif
+			#ifdef PDBG
+                print_direction();
+			#endif
 
+            #ifndef ABS
+            #ifndef DET
+			#ifndef PDEBG
+			int dir = turn_direction();
+			switch(dir) {
+				case 0:
+					//forward
+					break;
+				case 1:
+					//turn right
+					//FIXME add message here
+					break;
+				case 2:
+					//turn left
+					//FIXME add message here
+					break;
+				default:
+					//forward again
+					break;
+			}
+            #endif
+            #endif
+			#endif
             }
 
         }
@@ -100,6 +142,14 @@ int main(){
 	}
     return 0;
 }
+
+
+void next_dist(BasePath* result) {
+	int d = result->GetVertext(node_num+1)->Weight(); //distance to next node
+	distance_togo = d - distance_traveled;
+	node_num++; //increment path index
+}
+
 
 BasePath* get_shortest_path(string map, int start, int end){
 

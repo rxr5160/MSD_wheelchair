@@ -11,6 +11,7 @@
 #include <fstream>
 #include <iostream>
 #include <algorithm>
+#include <sstream>
 #include "GraphElements.h"
 #include "Graph.h"
 #include "DijkstraShortestPathAlg.h"
@@ -27,6 +28,25 @@ void testDijkstraGraph()
 		shortest_path_alg.get_shortest_path(
 			my_graph_pt->get_vertex(0), my_graph_pt->get_vertex(6));
 	result->PrintOut(cout);
+//
+/**
+ * gives each vertex and cumulative weight
+ *
+	cout << result->GetVertex(0)->getID();
+	cout << result->GetVertex(0)->Weight();
+	cout << "\n";	
+	cout << result->GetVertex(1)->getID();
+	cout << result->GetVertex(1)->Weight();
+	cout << "\n";	
+	cout << result->GetVertex(2)->getID();
+	cout << result->GetVertex(2)->Weight();
+	cout << "\n";	
+	cout << result->GetVertex(3)->getID();
+	cout << result->GetVertex(3)->Weight();
+	cout << "\n";	
+*/
+
+
 }
 
 /*void testYenAlg()
@@ -44,7 +64,7 @@ void testDijkstraGraph()
 	}
 }*/
 
-int main(...)
+int main(void)
 {
 	cout << "Welcome to the real world!" << endl;
 
