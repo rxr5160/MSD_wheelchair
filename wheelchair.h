@@ -1,3 +1,16 @@
+
+/** compile with::
+*
+*    g++ -std=c++11 <filename> -lrealsense2
+*       -DABS if you want raw quadrent distance
+*		-DDET if want grid of blockage
+*		-DPDBG if just print directional decision
+*
+**/
+
+
+
+
 #ifndef WHEELCHAIR_H
 #define WHEELCHAIR_H
 

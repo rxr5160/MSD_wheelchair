@@ -8,13 +8,6 @@
 
 #include "wheelchair.h"
 
-/** compile with::
-*
-*    g++ -std=c++11 <filename> -lrealsense2
-*       -DABS if you want raw quadrent distance
-*		-DDET if want grid of blockage
-*
-**/
 
 float quadrents[16] = {0};
 

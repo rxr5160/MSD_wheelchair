@@ -41,7 +41,6 @@ int main(){
 
     BasePath* result = get_shortest_path("path_planning/map_v2", 0, 6);
 	//result->PrintOut(cout);
-
 	next_dist(result); // get distance to check against for next node distance
 
     //Test grid system
@@ -76,11 +75,14 @@ int main(){
 					cout << "!! Reached node ID ";
                         cout << result->GetVertex(node_num)->getID();
                         cout << "\r\n";
-					distance_traveled = distance_traveled + distance_togo; //== node wight
+					distance_traveled = distance_traveled + distance_togo; //will equal node wight
 					next_dist(result);
 					reset_pose = true;
+					//TODO communication - stop chair?
 				}
 				else{
+					//TODO communication - start chair?
+					//debug print
 					cout << "not yet at node idx " + node_num + "\r\n";
 					cout << "D: " + pose_data.translation.z + "out of " + 
 												distance_togo + "\r\n";
@@ -118,22 +120,23 @@ int main(){
 
             #ifndef ABS
             #ifndef DET
-			#ifndef PDEBG
-			int dir = turn_direction();
-			switch(dir) {
+			#ifndef PDBG
+			switch (turn_direction()) {
 				case 0:
 					//forward
+					//TODO communication add message here
 					break;
 				case 1:
 					//turn right
-					//FIXME add message here
+					//TODO communication add message here
 					break;
 				case 2:
 					//turn left
-					//FIXME add message here
+					//TODO communication add message here
 					break;
 				default:
 					//forward again
+					//TODO communication add message here
 					break;
 			}
             #endif
@@ -150,7 +153,7 @@ int main(){
 
 void next_dist(BasePath* result) {
 	node_num++; //increment path index
-	int d = result->GetVertex(node_num+1)->Weight(); //distance to next node
+	int d = result->GetVertex(node_num)->Weight(); //distance to next node
 	distance_togo = d - distance_traveled;
 }
 
