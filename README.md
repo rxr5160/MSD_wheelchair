@@ -11,7 +11,7 @@ MSD-21311 project, Mind-controlled Wheelchair
 	- reset flag, boolean
 - setup cameras
 - get path through nodes
-- set next node and distance to node -> current always nodes 0->1
+- set next node and distance to node -> currently always starts with nodes 0 to1
 - *loop*
 	- get dstance traveled from camera
 	- check if at the node -> z distance vs. togo distance
