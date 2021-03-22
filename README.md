@@ -15,10 +15,12 @@ MSD-21311 project, Mind-controlled Wheelchair
 - *loop*
 	- get dstance traveled from camera
 	- check if at the node -> z distance vs. togo distance
+		- ?chair forward
 		- adjust total distance traveled
 		- set next node and distance togo
 		- set reset
 	- if reset
+		- ?chair stop
 		- reset camera pose
 		- clear reset
 	- check depth camera

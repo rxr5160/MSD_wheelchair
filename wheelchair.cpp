@@ -81,7 +81,9 @@ int main(){
 					reset_pose = true;
 				}
 				else{
-					cout << "not yet...\n";
+					cout << "not yet at node idx " + node_num + "\r\n";
+					cout << "D: " + pose_data.translation.z + "out of " + 
+												distance_togo + "\r\n";
 				}
 				///
 				///
@@ -147,9 +149,9 @@ int main(){
 
 
 void next_dist(BasePath* result) {
+	node_num++; //increment path index
 	int d = result->GetVertex(node_num+1)->Weight(); //distance to next node
 	distance_togo = d - distance_traveled;
-	node_num++; //increment path index
 }
 
 
