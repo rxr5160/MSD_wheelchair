@@ -5,6 +5,9 @@ bool reset_pose = false;
 int node_num = 0; //starting/current node idx
 int distance_traveled = 0; //total distance gone
 int distance_togo = 0; //distance to next node
+/// start and end positions
+int start_node = 0;
+int end_node = 6;
 
 BasePath* get_shortest_path(string map, int start, int end);
 void next_dist(BasePath* result);
@@ -39,7 +42,7 @@ int main(){
         }
     }
 
-    BasePath* result = get_shortest_path("path_planning/map_v2", 0, 6);
+    BasePath* result = get_shortest_path("path_planning/map_v2", start_node, end_node);
 	//result->PrintOut(cout);
 	next_dist(result); // get distance to check against for next node distance
 
@@ -71,11 +74,17 @@ int main(){
 
 				///
 				/// check distance traveled
-				if (pose_data.translation.z >= distance_togo) {
+				if (-(pose_data.translation.z) >= distance_togo) {
 					cout << "!! Reached node ID ";
                         cout << result->GetVertex(node_num)->getID();
                         cout << "\r\n";
 					distance_traveled = distance_traveled + distance_togo; //will equal node wight
+                    //check if at destination
+                    if (result->GetVertex(node_num)->getID() == end_node){
+                        cout << "You made it!\r\n";
+                        return 0;
+                    }
+                    //else continue to next node
 					next_dist(result);
 					reset_pose = true;
 					//TODO communication - stop chair?
@@ -83,9 +92,14 @@ int main(){
 				else{
 					//TODO communication - start chair?
 					//debug print
-					cout << "not yet at node idx " + node_num + "\r\n";
-					cout << "D: " + pose_data.translation.z + "out of " + 
-												distance_togo + "\r\n";
+					cout << "not yet at node idx ";
+                        cout << node_num;
+                        cout << "\r\n";
+					cout << "D: ";
+                        cout << -(pose_data.translation.z);
+                        cout << "out of ";
+                        cout << distance_togo;
+                        cout << "\r\n";
 				}
 				///
 				///
@@ -94,6 +108,12 @@ int main(){
                 if(reset_pose){
                     pipe.stop();
                     std::this_thread::sleep_for(std::chrono::seconds(1));
+                    /// wait for turn
+                    cout << "press any key and then ENTER once turned to face node ID ";
+                        cout << (node_num + 1);
+                        cout << "\r\n";
+                    int waiter;
+                    cin >> waiter;
                     pipe.start(t265_config);
                     reset_pose = false;
 					next_dist(result);
