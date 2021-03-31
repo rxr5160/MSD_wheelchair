@@ -3,7 +3,7 @@
  * Authored by MSD team P21311, 2021
  * Samples taken from Intel library / examples and some open forums.
  * main to stitch pose and distance cameras, communication, and pathing
- * 
+ *
  *
 **/
 
@@ -29,14 +29,13 @@ bool is_number(const std::string& s);
 int main(int argc, char *argv[]) {
 	// get arguments for start and end nodes
 	if (argc < 3) {
-		cout << "Include a start and end node before running\r\n
-				\tEX: ./wheelchair 0 6\r\n";
+		cout << "Include a start and end node before running\r\n\tEX: ./wheelchair 0 6\r\n";
 		return 1;
 	}
 	else {
 		if (is_number(argv[1]) && is_number(argv[2])) {
-			start_node = atoi(argv[1];
-			end_node = atoi(argv[2];
+			start_node = atoi(argv[1]);
+			end_node = atoi(argv[2]);
 		}
 	} //end argument collection
 
@@ -66,7 +65,7 @@ int main(int argc, char *argv[]) {
     }
 
 	// get the path to travel
-    BasePath* result = get_shortest_path("path_planning/map_v2", 
+    BasePath* result = get_shortest_path("path_planning/map_v2",
 			start_node, end_node);
 	//result->PrintOut(cout); // debug statment
 	next_dist(result); // get distance to check against for next node distance
@@ -82,22 +81,22 @@ int main(int argc, char *argv[]) {
             if (pose) {
                 pose_frame = pose;
 
-                // Print the x, y, z values of the translation, 
+                // Print the x, y, z values of the translation,
 				//   relative to initial position
                 auto pose_data = pose.get_pose_data();
-                std::cout << "\r" << "Device Position: " 
-					<< pose_data.translation.x << " : " 
-					<< pose_data.translation.y << " : " 
+                std::cout << "\r" << "Device Position: "
+					<< pose_data.translation.x << " : "
+					<< pose_data.translation.y << " : "
 					<< pose_data.translation.z << " (meters)\n\n";
 
-                // add new point in the trajectory 
+                // add new point in the trajectory
 				// (if motion large enough to reduce size of traj. vector)
                 if (trajectory.size() == 0)
                     trajectory.push_back(pose_data.translation);
                 else {
                     rs2_vector prev = trajectory.back();
                     rs2_vector curr = pose_data.translation;
-                    if(sqrt(pow((curr.x - prev.x),2) + pow((curr.y - prev.y),2) 
+                    if(sqrt(pow((curr.x - prev.x),2) + pow((curr.y - prev.y),2)
 							+ pow((curr.z - prev.z),2)) > 0.002){
                         trajectory.push_back(pose_data.translation);
                     }
@@ -112,7 +111,7 @@ int main(int argc, char *argv[]) {
                         cout << result->GetVertex(node_num)->getID();
                         cout << "\r\n";
 					// distance_traveled will equal total node wight from graph
-					distance_traveled = distance_traveled + distance_togo; 
+					distance_traveled = distance_traveled + distance_togo;
                     //check if at destination
                     if (result->GetVertex(node_num)->getID() == end_node){
                         cout << "You made it!\r\n";
@@ -145,14 +144,14 @@ int main(int argc, char *argv[]) {
 					//TODO
 					// Turn check on angle - reach goal so not a high priority
 					// comment is example for reading from gyro
-					// more reading motion ex from: 
+					// more reading motion ex from:
 					// https://github.com/IntelRealSense/librealsense/blob/master/doc/t265.md
 					/*
-					if (rs2::motion_frame gyro_frame = 
+					if (rs2::motion_frame gyro_frame =
 							frameset.first_or_default(RS2_STREAM_GYRO)){
 					   rs2_vector gyro_sample = gyro_frame.get_motion_data();
-						//std::cout << "Gyro:" << gyro_sample.x << ", " 
-						<< gyro_sample.y << ", " 
+						//std::cout << "Gyro:" << gyro_sample.x << ", "
+						<< gyro_sample.y << ", "
 						<< gyro_sample.z << std::endl;
 						//...
 					}
@@ -161,8 +160,7 @@ int main(int argc, char *argv[]) {
                     pipe.stop();
                     std::this_thread::sleep_for(std::chrono::seconds(1));
                     /// wait for turn
-                    cout << "press any key and then ENTER once 
-								turned to face node ID ";
+                    cout << "press any key and then ENTER onceturned to face node ID ";
                         cout << (node_num + 1);
                         cout << "\r\n";
                     int waiter;
@@ -237,7 +235,7 @@ void next_dist(BasePath* result) {
 	distance_togo = d - distance_traveled;
 }
 
-//get pathing from starting node to ending node 
+//get pathing from starting node to ending node
 BasePath* get_shortest_path(string map, int start, int end){
 	Graph* my_graph_pt = new Graph(map);
 	DijkstraShortestPathAlg shortest_path_alg(my_graph_pt);
