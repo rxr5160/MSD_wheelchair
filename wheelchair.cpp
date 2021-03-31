@@ -136,7 +136,7 @@ int main(int argc, char *argv[]) {
                         cout << "\r\n";
 					cout << "D: ";
                         cout << -(pose_data.translation.z);
-                        cout << "out of ";
+                        cout << " out of ";
                         cout << distance_togo;
                         cout << "\r\n";
 				}
