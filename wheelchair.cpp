@@ -7,6 +7,9 @@
  *
 **/
 
+#include <iostream>
+#include <iomanip>
+
 #include "wheelchair.h"
 
 // global variables //
@@ -84,6 +87,8 @@ int main(int argc, char *argv[]) {
                 // Print the x, y, z values of the translation,
 				//   relative to initial position
                 auto pose_data = pose.get_pose_data();
+                std::cout << std::fixed;
+                std::cout << std::setprecision(5);
                 std::cout << "\r" << "Device Position: "
 					<< pose_data.translation.x << " : "
 					<< pose_data.translation.y << " : "
