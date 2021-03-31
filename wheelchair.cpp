@@ -131,8 +131,8 @@ int main(int argc, char *argv[]) {
 				else{
 					//TODO communication - start chair?
 					//debug print
-					cout << "not yet at node idx ";
-                        cout << node_num;
+					cout << "not yet at node ID ";
+                        cout << result->GetVertex(node_num)->getID();
                         cout << "\r\n";
 					cout << "D: ";
                         cout << -(pose_data.translation.z);
