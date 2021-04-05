@@ -6,11 +6,13 @@
  *
  *
 **/
-
 #include <iostream>
 #include <iomanip>
 
 #include "wheelchair.h"
+#include "arduino_serial.h"
+
+#define MAX_FORWARD 100
 
 // global variables //
 bool reset_pose = false;
@@ -41,6 +43,11 @@ int main(int argc, char *argv[]) {
 			end_node = atoi(argv[2]);
 		}
 	} //end argument collection
+
+    bool moving = false;
+    int x_val = 0;
+    int y_val = 0;
+    Init_Arduino();
 
     rs2::pose_frame pose_frame(nullptr);
     std::vector<rs2_vector> trajectory;
@@ -74,7 +81,7 @@ int main(int argc, char *argv[]) {
 	next_dist(result); // get distance to check against for next node distance
 
     //Test grid system
-	while(1){
+	while(g_running){
         for (auto &&pipe : pipelines){ // loop over pipelines
             // Wait for the next set of frames from the camera
             auto frames = pipe.wait_for_frames();
@@ -125,11 +132,11 @@ int main(int argc, char *argv[]) {
                     //else continue to next node
 					next_dist(result);
 					reset_pose = true;
-					//TODO communication - stop chair?
+                    moving = false;
 				} // end reached
 				// still traveling
 				else{
-					//TODO communication - start chair?
+                    moving = true;
 					//debug print
 					cout << "not yet at node ID ";
                         cout << result->GetVertex(node_num)->getID();
@@ -200,7 +207,8 @@ int main(int argc, char *argv[]) {
 			switch (turn_direction()) {
 				case 0:
 					//forward
-					//TODO communication add message here
+					x_val = 0;
+                    y_val = MAX_FORWARD;
 					break;
 				case 1:
 					//turn right
@@ -212,7 +220,8 @@ int main(int argc, char *argv[]) {
 					break;
 				default:
 					//forward again
-					//TODO communication add message here
+					x_val = 0;
+                    y_val = MAX_FORWARD;
 					break;
 			}
             #endif
@@ -221,7 +230,11 @@ int main(int argc, char *argv[]) {
             }
 
         }
-
+        if(!moving){
+            x_val = 0;
+            y_val = 0;
+        }
+        send_arduino_cmd(x_val, y_val);
 	} //end loop
     return 0;
 } //end main

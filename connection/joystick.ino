@@ -1,8 +1,5 @@
 // Communicate with DigiPOT over SPI
-#include <Ethernet.h>
-#include <SPI.h>
-
-#define DEBUG 0
+#define DEBUG 1
 
 #define CLK_PIN  13
 #define MISO_PIN 12
@@ -22,26 +19,12 @@ const int YPOT = 1;
 int x_pos = 127;
 int y_pos = 127;
 
-byte mac[] = {0x5C, 0xE0, 0xC5, 0x15, 0xB1, 0x3E};
-byte ip[] = {129, 21, 119, 148};
-
-EthernetClient client;
-
 void digitalPotWrite(int address, int value);
 void SPI_transfer(int value, int bits);
 
 void setup() {
   while(!Serial);
-
-  //Trying out Ethernet connection to Linux server
-  Ethernet.begin(mac, ip);
   Serial.begin(9600);
-
-  delay(1000);
-
-  if(client.connect(ip, 1234)){
-    client.println("GET /serch?q=arduino HTTP/1.0");
-  }
 
   if (DEBUG) Serial.println("Joystick Controller in DEBUG mode. Feedback Enabled");
 
