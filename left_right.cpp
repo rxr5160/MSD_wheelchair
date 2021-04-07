@@ -245,7 +245,7 @@ int turn_direction(){
         if (quadrents[c] < THRESH) {
             //std::cout << "somethig close on lcenter" << c << "\n";
 			//std::cout << "==turn to the right==\n";
-			return 1;
+			return 3;
         }
     }
 	//center right
@@ -253,7 +253,7 @@ int turn_direction(){
         if (quadrents[c] < THRESH) {
             //std::cout << "somethig close on rcenter" << c << "\n";
 	    	//std::cout << "==turn to the left==\n";
-			return 2;
+			return 4;
         }
     }
 	//nothing
