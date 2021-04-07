@@ -44,5 +44,6 @@
 #include "path_planning/Graph.h"
 #include "path_planning/DijkstraShortestPathAlg.h"
 #include "connection/arduino_serial.h"
+#include "steer.h"
 
 #endif /* WHEELCHAIR_H */

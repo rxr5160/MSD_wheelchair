@@ -11,8 +11,6 @@
 
 #include "wheelchair.h"
 
-#define MAX_FORWARD 100
-
 // global variables //
 bool reset_pose = false;
 int node_num = 0; //starting/current node idx
@@ -209,21 +207,33 @@ int main(int argc, char *argv[]) {
 			switch (turn_direction()) {
 				case 0:
 					//forward
-					x_val = 0;
-                    y_val = MAX_FORWARD;
+					x_val = steer(0);
+					y_val = forward(x_val);
 					break;
 				case 1:
 					//turn right
-					//TODO communication add message here
+					x_val = steer(1);
+					y_val = forward(x_val);
 					break;
 				case 2:
 					//turn left
-					//TODO communication add message here
+					x_val = steer(2);
+					y_val = forward(x_val);
+					break;
+				case 3:
+					//turn right, center left
+					x_val = steer(3);
+					y_val = forward(x_val);
+					break;
+				case 4:
+					//turn left, center right
+					x_val = steer(4);
+					y_val = forward(x_val);
 					break;
 				default:
 					//forward again
-					x_val = 0;
-                    y_val = MAX_FORWARD;
+					x_val = steer(0);
+					y_val = forward(x_val);
 					break;
 			}
             #endif
