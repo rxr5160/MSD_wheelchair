@@ -1,24 +1,35 @@
 #include <errno.h>
-#include <stdbool.h>
 #include <fcntl.h>
 #include <string.h>
 #include <stdio.h>
-#include <signal.h>
 #include <sys/stat.h>
 #include <termios.h>
 #include <unistd.h>
 
+#include "arduino_serial.h"
+
 #define ARDUINO_TTY "/dev/ttyACM0"
 
-bool g_running = true;
-bool new_command = false;
+int arduino = -1;
 
-void handle_signal(int sig){
-    g_running = false;
+int set_interface_attribs (int fd, int speed, int parity);
+void set_blocking (int fd, int should_block);
+
+bool Init_Arduino(){
+
+    arduino = open(ARDUINO_TTY, O_RDWR | O_NOCTTY | O_SYNC);
+    if(arduino < 0){
+        fprintf(stdout, "Failed to open file %d, %s\n", errno, strerror(errno));
+        return 0;
+    }
+
+    set_interface_attribs (arduino, B9600, 0);  // set speed to 9600 bps, 8n1 (no parity)
+    set_blocking (arduino, 0);                // set no blocking
+
 }
 
-int set_interface_attribs (int fd, int speed, int parity)
-{
+int set_interface_attribs (int fd, int speed, int parity){
+
         struct termios tty;
         if (tcgetattr (fd, &tty) != 0)
         {
@@ -56,8 +67,8 @@ int set_interface_attribs (int fd, int speed, int parity)
         return 0;
 }
 
-void set_blocking (int fd, int should_block)
-{
+void set_blocking (int fd, int should_block){
+
         struct termios tty;
         memset (&tty, 0, sizeof tty);
         if (tcgetattr (fd, &tty) != 0)
@@ -74,38 +85,20 @@ void set_blocking (int fd, int should_block)
         }
 }
 
-
-
-int main(){
-
-    signal(SIGINT, handle_signal);
+void send_arduino_cmd(int x, int y){
 
     int len;
-    char cmd[100];
-    char message[100];
+    char cmd[10];
+    char message[10];
 
-    chmod(ARDUINO_TTY, S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH | S_IRUSR | S_IWUSR);
-    int arduino = open(ARDUINO_TTY, O_RDWR | O_NOCTTY | O_SYNC);
-    if(arduino < 0){
-        fprintf(stdout, "Failed to open file %d, %s\n", errno, strerror(errno));
-        return 0;
-    }
+    //Send X value
+    len = sprintf((char *)cmd, "x %d", x);
+    write(arduino, cmd, len);
+    read(arduino, message, 10);
+    memset(message, '\0', 10);
 
-    set_interface_attribs (arduino, B9600, 0);  // set speed to 9600 bps, 8n1 (no parity)
-    set_blocking (arduino, 0);                // set no blocking
-
-    while(g_running){
-        new_command = issue_command();
-
-        if(new_command){
-            len = read(arduino, message, 100);
-            if(len > 0){
-                fprintf(stdout, "Message from Arduino : %s\n", message);
-            }
-            new_command = false;
-        }
-        memset(message, '\0', 100);
-    }
-    close(arduino);
-    return 0;
+    //Send Y value
+    len = sprintf((char *)cmd, "y %d", y);
+    write(arduino, cmd, len);
+    read(arduino, message, 10);
 }

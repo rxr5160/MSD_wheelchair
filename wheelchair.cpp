@@ -10,7 +10,6 @@
 #include <iomanip>
 
 #include "wheelchair.h"
-#include "arduino_serial.h"
 
 #define MAX_FORWARD 100
 
@@ -47,7 +46,10 @@ int main(int argc, char *argv[]) {
     bool moving = false;
     int x_val = 0;
     int y_val = 0;
-    Init_Arduino();
+    if(!Init_Arduino()){
+        std::cout << "Failed to connect to arduino\r\n";
+        return 1;
+    }
 
     rs2::pose_frame pose_frame(nullptr);
     std::vector<rs2_vector> trajectory;
