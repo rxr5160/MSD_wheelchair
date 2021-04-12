@@ -13,15 +13,18 @@
 #include <iostream>
 #include <unistd.h>
 
+#define ADDR "tcp://129.21.118.106:4321"
+
 int main () {
     //  Prepare our context and socket
-    zmq::context_t context (1);
+    zmq::context_t context(1);
     zmq::socket_t socket (context, ZMQ_REP);
-    socket.bind ("tcp://*:5555");
 
-    std::cout << "Bound to socket\r\n";
+    int ret = zmq_bind((void *)socket, ADDR);
+    if(ret < 0){
+        std::cout << "Failed to bind socket\r\n";
+    }
 
-    return 0;
 
     while (true) {
         zmq::message_t request;
