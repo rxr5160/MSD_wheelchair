@@ -6,9 +6,10 @@
  *
 **/
 
-//using floor function to get to 0 steering rather than get stuck at 1
-// might not be needed because of int ingection
-//	if bunch of zeros are injected becuase its clear in front it would be fine
+// ** Thoughts on including float/math/floor functions **
+//using floor function to get to 0 steering rather than possibly get stuck at 1
+// might not be needed because of int injection
+//	if bunch of zeros are injected becuase it's clear in front it would be fine
 //	0, 50, or 100 values -> would not be an issue
 //	will leave for saftey 
 #include <cmath>

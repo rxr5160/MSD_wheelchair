@@ -188,7 +188,7 @@ int main(int argc, char *argv[]) {
                     pipe.stop();
                     std::this_thread::sleep_for(std::chrono::seconds(1));
                     /// wait for turn
-                    cout << "press any key and then ENTER onceturned to face node ID ";
+                    cout << "press any key and then ENTER once turned to face node ID ";
                         cout << (node_num + 1);
                         cout << "\r\n";
                     int waiter;
@@ -199,8 +199,8 @@ int main(int argc, char *argv[]) {
                 } //end reset pose block
             } //end pose frame block
 
-            auto depth = frames.get_depth_frame();
 
+            auto depth = frames.get_depth_frame();
             // Generate the pointcloud and texture mappings
 			// object detection
             if (depth){
