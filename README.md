@@ -9,40 +9,40 @@ MSD-21311 project, Mind-controlled Wheelchair
 	- total distnace traveled
 	- distnace togo to next node
 	- reset flag, boolean
+- set start and end nodes from cmd arguments
 - setup cameras
 - get path through nodes
-- set next node and distance to node -> currently always starts with nodes 0 to1
+- set next node and distance to node 
 - *loop*
 	- get dstance traveled from camera
 	- check if at the node -> z distance vs. togo distance
-		- ?chair forward
 		- adjust total distance traveled
 		- set next node and distance togo
 		- set reset
 	- if reset
-		- ?chair stop
 		- reset camera pose
 		- clear reset
 	- check depth camera
-		- send turn signals as needed
+		- adjust turn and acceleration signals as needed
+	- send message to chair control of forward and turn intensity
 - *end loop*
 
+wheelchair -> main 
+left_right -> object detection
+steering -> steering and acceleration control
+path_planning/ -> contains pathing files and map graph, runs Dijkstra shortest path
+connection/ -> contains communcation code
+build.sh -> compiles system, bypass a makefile to run the command in shell
 
-
-
-
-
-
-Note: tracking camera MUST have a USB3.0 controller or it throws an error
 
 NOTES
 =====
+Tracking camera MUST have a USB3.0 controller or it throws an error
 
-left_right.cpp has object detection via quadrent averages and currently (3/15) prints a left or right direction to be sent to the controller.
+Several macros are used in debug for object detection
+- ABS, prints average distance for each quadrent
+- DET, prints quadrents with marks for threshold detection in each
+- PDBG, prints signal it would want to send, turn left/turn right
 
-In the path-planning folder, there are files for creating a node map as well as path planning that returns the shortest path.
-
-Communication with the BCI and Arduino is being completed by Sid. Creating a library with connect and receive/send information functions. Data is expected to be JSON key/value pairs.
-
-
+Steering uses a quick and dirty PID of 10 elements to smooth steering, adjust size as needed -> PID_SIZE
 
