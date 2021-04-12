@@ -223,9 +223,20 @@ void print_direction(){
     }
 }
 
+
+
+
+/**
+ * real turn code
+ * 
+ * commented / modified to ignore bottom row of grid
+ * 		always picked up the floor
+**/
 int turn_direction(){
 	//left
-    for (int c=0; c < 16; c+=4){
+    //for (int c=0; c < 16; c+=4){
+	// remove bottom row
+    for (int c=0; c < 12; c+=4){
         if (quadrents[c] < THRESH) {
             //std::cout << "somethig close on left side" << c << "\n";
 			//std::cout << "==turn to the right==\n";
@@ -233,7 +244,9 @@ int turn_direction(){
         }
     }
 	//right
-	for (int c=3; c < 16; c+=4){
+	//for (int c=3; c < 16; c+=4){
+	// remove bottom row
+	for (int c=3; c < 12; c+=4){
         if (quadrents[c] < THRESH) {
             //std::cout << "somethig close on right side" << c << "\n";
 		    //std::cout << "==turn to the left==\n";
@@ -241,7 +254,9 @@ int turn_direction(){
         }
     }
 	//center left
-    for (int c=1; c < 16; c+=4){
+    //for (int c=1; c < 16; c+=4){
+	// remove bottom row
+    for (int c=1; c < 12; c+=4){
         if (quadrents[c] < THRESH) {
             //std::cout << "somethig close on lcenter" << c << "\n";
 			//std::cout << "==turn to the right==\n";
@@ -249,7 +264,9 @@ int turn_direction(){
         }
     }
 	//center right
-	for (int c=2; c < 16; c+=4){
+	//for (int c=2; c < 16; c+=4){
+	// remove bottom row
+	for (int c=2; c < 12; c+=4){
         if (quadrents[c] < THRESH) {
             //std::cout << "somethig close on rcenter" << c << "\n";
 	    	//std::cout << "==turn to the left==\n";
