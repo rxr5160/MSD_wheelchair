@@ -1,8 +1,15 @@
 # MSD_wheelchair
 MSD-21311 project, Mind-controlled Wheelchair
 
-<h3> (3/22) code structure of Wheelchair main </h3>
-**NOTE**: Currently no communitcation code in the structure. It is being worked on. <br>
+wheelchair -> main</br>
+left_right -> object detection</br>
+steering -> steering and acceleration control</br>
+path_planning/ -> contains pathing files and map graph, runs Dijkstra shortest path</br>
+connection/ -> contains communcation code</br>
+build.sh -> compiles system, bypass a makefile to run the command in shell</br>
+
+
+<h3> code structure of Wheelchair main </h3>
 
 - set global variables
 	- next node idx
@@ -27,13 +34,6 @@ MSD-21311 project, Mind-controlled Wheelchair
 	- send message to chair control of forward and turn intensity
 - *end loop*
 
-wheelchair -> main 
-left_right -> object detection
-steering -> steering and acceleration control
-path_planning/ -> contains pathing files and map graph, runs Dijkstra shortest path
-connection/ -> contains communcation code
-build.sh -> compiles system, bypass a makefile to run the command in shell
-
 
 NOTES
 =====
@@ -44,5 +44,6 @@ Several macros are used in debug for object detection
 - DET, prints quadrents with marks for threshold detection in each
 - PDBG, prints signal it would want to send, turn left/turn right
 
-Steering uses a quick and dirty PID of 10 elements to smooth steering, adjust size as needed -> PID_SIZE
+Steering uses a quick and dirty PID of 10 elements to smooth steering, adjust size as needed (PID_SIZE in steering.cpp)
 
+Object detection distance can be adjusted via the THRESH macro in wheelchair.h
