@@ -19,15 +19,13 @@
 // I think our speeds will be slow enough that a gradual reduction of 
 //	steering isnt really needed
 
-
 //averge turns to straighten out - PID light
 int last_turns[10] = {0};
-int curt = 0;
-
 
 // @param: 0 stright :: 1 right :: 2 left :: 3 hard right :: 4 hard left
 // @return: x value for turn: 100 is max
 int steer(int direction) {
+	int curt = 0;
 	switch (direction) {
 		case 0:
 			// no turn bias
@@ -48,7 +46,7 @@ int steer(int direction) {
 			break;
 		case 4:
 			// hard left
-			curt -MAXTURN;
+			curt = -MAXTURN;
 			break;
 		defualt:
 			curt 0;
@@ -56,10 +54,11 @@ int steer(int direction) {
 	} // end switch
 
 	//quick and dirty PID
-	for(int i=1; i=<10; i++){
+	// 10 element SR and average
+	for(int i=1; i<10; i++){
 		last_turns[i-1] = last_turns[i];
 	}
-	last_turns[10] = curt;
+	last_turns[9] = curt;
 	int pid = 0;
 	for(int x : last_turns) {
 		pid = pid + x;
@@ -72,11 +71,14 @@ int forward(int turn){
 	//max turn = half speed
 	//small turn = 3/4 speed
 	if (turn > 50){
+		//hald speed
 		return MAX_FORWARD/2;
 	}
 	else if (turn > 25) {
-		return (MAX_FORWARD/4)+(MAX_FORWARD/2);
+		//3/4 speed
+		return ((MAX_FORWARD * (3/4));
 	else { //<25
+		//full speed
 		return MAX_FORWARD;
 	}
 }
