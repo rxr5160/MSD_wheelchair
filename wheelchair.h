@@ -36,6 +36,7 @@
 #include <math.h>
 #include <iostream>
 #include <algorithm>            // std::min, std::max
+#include <signal.h>
 #include <thread>
 #include <chrono>
 //Extension headers

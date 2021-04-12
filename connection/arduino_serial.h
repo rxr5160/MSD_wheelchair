@@ -10,5 +10,6 @@
 
 bool Init_Arduino();
 void send_arduino_cmd(int x, int y);
+void cleanup_arduino();
 
 #endif /* ARDUINO_SERIAL_H */
