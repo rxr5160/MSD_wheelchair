@@ -27,6 +27,12 @@ BasePath* get_shortest_path(string map, int start, int end);
 void next_dist(BasePath* result);
 bool is_number(const std::string& s);
 
+
+void signalHandler(int signum) {
+   cleanup_arduino();
+   g_running = false;
+}
+
 ///
 /// main
 ///
@@ -34,7 +40,7 @@ int main(int argc, char *argv[]) {
 	//
 	//signal handler to cleanly exit arduino
 	//
-	signal(SIGINT, cleanup_arduino);
+	signal(SIGINT, signalHandler);
 
 	// get arguments for start and end nodes
 	if (argc < 3) {
@@ -91,7 +97,7 @@ int main(int argc, char *argv[]) {
 
 
 	//start running
-	g_running = true;	
+	g_running = true;
 	//
     // main loop that interfaces with cameras and makes decisions
 	//
