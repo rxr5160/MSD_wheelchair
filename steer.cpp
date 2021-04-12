@@ -6,6 +6,14 @@
  *
 **/
 
+//using floor function to get to 0 steering rather than get stuck at 1
+// might not be needed because of int ingection
+//	if bunch of zeros are injected becuase its clear in front it would be fine
+//	0, 50, or 100 values -> would not be an issue
+//	will leave for saftey 
+#include <cmath>
+#include <ctgmath>
+
 #define MAXTURN 100
 #define MAX_FORWARD 100
 
@@ -54,24 +62,27 @@ int steer(int direction) {
 	} // end switch
 
 	//quick and dirty PID
-	// 10 element SR and average
-	for(int i=1; i<10; i++){
+	// 10 element shift register and average
+	//shift left
+	for(int i=1; i<9; i++){
 		last_turns[i-1] = last_turns[i];
 	}
+	//assign last element
 	last_turns[9] = curt;
-	int pid = 0;
+	//average and get pid value
+	float pid = 0;
 	for(int x : last_turns) {
 		pid = pid + x;
 	}
-	pid = pid/10;
-	return pid;
+	pid = floor(pid/10);
+	return int(pid);
 }
 
 int forward(int turn){
 	//max turn = half speed
 	//small turn = 3/4 speed
 	if (turn > 50){
-		//hald speed
+		//half speed
 		return MAX_FORWARD/2;
 	}
 	else if (turn > 25) {
