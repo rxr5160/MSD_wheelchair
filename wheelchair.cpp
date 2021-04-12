@@ -17,8 +17,10 @@ int node_num = 0; //starting/current node idx
 int distance_traveled = 0; //total distance gone
 int distance_togo = 0; //distance to next node
 /// start and end positions
-int start_node;// = 0;
-int end_node;// = 6;
+int start_node;
+int end_node;
+//boolean for main while - use to clean exit on destination reached
+bool g_running;
 
 // private function prototypes
 BasePath* get_shortest_path(string map, int start, int end);
@@ -29,6 +31,11 @@ bool is_number(const std::string& s);
 /// main
 ///
 int main(int argc, char *argv[]) {
+	//
+	//signal handler to cleanly exit arduino
+	//
+	signal(SIGINT, cleanup_arduino);
+
 	// get arguments for start and end nodes
 	if (argc < 3) {
 		cout << "Include a start and end node before running\r\n\tEX: ./wheelchair 0 6\r\n";
@@ -49,6 +56,8 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+
+	//set up cameras
     rs2::pose_frame pose_frame(nullptr);
     std::vector<rs2_vector> trajectory;
 	// Create librealsense context for managing devices
@@ -80,7 +89,12 @@ int main(int argc, char *argv[]) {
 	//result->PrintOut(cout); // debug statment
 	next_dist(result); // get distance to check against for next node distance
 
-    //Test grid system
+
+	//start running
+	g_running = true;	
+	//
+    // main loop that interfaces with cameras and makes decisions
+	//
 	while(g_running){
         for (auto &&pipe : pipelines){ // loop over pipelines
             // Wait for the next set of frames from the camera
@@ -119,6 +133,7 @@ int main(int argc, char *argv[]) {
 				///
 				// reached node
 				if (-(pose_data.translation.z) >= distance_togo) {
+					//debug prints
 					cout << "!! Reached node ID ";
                         cout << result->GetVertex(node_num)->getID();
                         cout << "\r\n";
@@ -127,7 +142,8 @@ int main(int argc, char *argv[]) {
                     //check if at destination
                     if (result->GetVertex(node_num)->getID() == end_node){
                         cout << "You made it!\r\n";
-                        return 0;
+                        //return 0;
+						g_running = false;
                     }
                     //else continue to next node
 					next_dist(result);
@@ -151,7 +167,7 @@ int main(int argc, char *argv[]) {
 				/// end distance check
 				///
 
-                // Reset pose when needed
+                // Reset pose when needed @ node
                 if(reset_pose){
 					//TODO
 					// Turn check on angle - reach goal so not a high priority
@@ -186,6 +202,7 @@ int main(int argc, char *argv[]) {
             auto depth = frames.get_depth_frame();
 
             // Generate the pointcloud and texture mappings
+			// object detection
             if (depth){
                quadrant_distance(pipe);
 

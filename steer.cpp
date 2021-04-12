@@ -16,6 +16,7 @@
 
 #define MAXTURN 100
 #define MAX_FORWARD 100
+#define PID_SIZE 10
 
 
 // start turn based on direction from main control
@@ -28,7 +29,7 @@
 //	steering isnt really needed
 
 //averge turns to straighten out - PID light
-int last_turns[10] = {0};
+int last_turns[PID_SIZE] = {0};
 
 // @param: 0 stright :: 1 right :: 2 left :: 3 hard right :: 4 hard left
 // @return: x value for turn: 100 is max
@@ -64,17 +65,17 @@ int steer(int direction) {
 	//quick and dirty PID
 	// 10 element shift register and average
 	//shift left
-	for(int i=1; i<9; i++){
+	for(int i=1; i<(PID_SIZE-1); i++){
 		last_turns[i-1] = last_turns[i];
 	}
 	//assign last element
-	last_turns[9] = curt;
+	last_turns[PID_SIZE-1] = curt;
 	//average and get pid value
 	float pid = 0;
 	for(int x : last_turns) {
 		pid = pid + x;
 	}
-	pid = floor(pid/10);
+	pid = floor(pid/PID_SIZE);
 	return int(pid);
 }
 
