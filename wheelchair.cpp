@@ -29,7 +29,7 @@ bool is_number(const std::string& s);
 
 
 void signalHandler(int signum) {
-   cleanup_arduino();
+   //cleanup_arduino(); // is run at end of main function - not needed twice
    g_running = false;
 }
 
@@ -271,6 +271,7 @@ int main(int argc, char *argv[]) {
         }
         send_arduino_cmd(x_val, y_val);
 	} //end loop
+	cleanup_arduino();
     return 0;
 } //end main
 
