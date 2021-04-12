@@ -12,8 +12,8 @@
 
 int arduino = -1;
 
-int set_interface_attribs (int fd, int speed, int parity);
-void set_blocking (int fd, int should_block);
+int set_interface_attribs (int speed, int parity);
+void set_blocking (int should_block);
 
 bool Init_Arduino(){
 
@@ -23,15 +23,20 @@ bool Init_Arduino(){
         return 0;
     }
 
-    set_interface_attribs (arduino, B9600, 0);  // set speed to 9600 bps, 8n1 (no parity)
-    set_blocking (arduino, 0);                // set no blocking
+    set_interface_attribs (B9600, 0);  // set speed to 9600 bps, 8n1 (no parity)
+    set_blocking (0);                // set no blocking
 
 }
 
-int set_interface_attribs (int fd, int speed, int parity){
+void cleanup_arduino(){
+    close(arduino);
+    arduino = -1;
+}
+
+int set_interface_attribs (int speed, int parity){
 
         struct termios tty;
-        if (tcgetattr (fd, &tty) != 0)
+        if (tcgetattr (arduino, &tty) != 0)
         {
             fprintf(stdout, "error %d from tcgetattr\n", errno);
             return -1;
@@ -59,7 +64,7 @@ int set_interface_attribs (int fd, int speed, int parity){
         tty.c_cflag &= ~CSTOPB;
         tty.c_cflag &= ~CRTSCTS;
 
-        if (tcsetattr (fd, TCSANOW, &tty) != 0)
+        if (tcsetattr (arduino, TCSANOW, &tty) != 0)
         {
             fprintf(stdout, "error %d from tcsetattr\n", errno);
             return -1;
@@ -67,11 +72,11 @@ int set_interface_attribs (int fd, int speed, int parity){
         return 0;
 }
 
-void set_blocking (int fd, int should_block){
+void set_blocking (int should_block){
 
         struct termios tty;
         memset (&tty, 0, sizeof tty);
-        if (tcgetattr (fd, &tty) != 0)
+        if (tcgetattr (arduino, &tty) != 0)
         {
                 fprintf(stdout, "error %d from tggetattr\n", errno);
                 return;
@@ -80,7 +85,7 @@ void set_blocking (int fd, int should_block){
         tty.c_cc[VMIN]  = should_block ? 1 : 0;
         tty.c_cc[VTIME] = 5;            // 0.5 seconds read timeout
 
-        if (tcsetattr (fd, TCSANOW, &tty) != 0){
+        if (tcsetattr (arduino, TCSANOW, &tty) != 0){
             fprintf(stdout, "error %d setting term attributes\n", errno);
         }
 }
