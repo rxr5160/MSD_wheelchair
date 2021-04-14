@@ -10,6 +10,7 @@
 
 
 float quadrents[16] = {0};
+bool wall = false;
 
 void quadrant_distance(rs2::pipeline p){
     // Block program until frames arrive
@@ -29,6 +30,22 @@ void quadrant_distance(rs2::pipeline p){
 	// Query the distance from the camera to the object in the
 	//		center of the image
 	float total_pixel = width * height;
+
+	// wall check  - obj too close to make a decision
+	float total_dist = 0;
+	for(int i_w = 0; i_w < width; i_w++){
+		for(int i_h = 0; i_h < height; i_h++){
+			total_dist = total_dist + depth.get_distance(i_w, i_h);
+		}
+	}
+	float avg_dist = total_dist / total_pixel;
+	if (avg_dist < THRESH) {
+		wall = true;
+	}
+	else {
+		wall = false;
+	}
+
 
     //measure Q0
 	for(int i_w = 0; i_w < wdiv; i_w++){
@@ -233,6 +250,10 @@ void print_direction(){
  * 		always picked up the floor
 **/
 int turn_direction(){
+	//object too close or wall - just stop and ask for help
+	if (wall) {
+		return 5;
+	}
 	//center left
     //for (int c=1; c < 16; c+=4){
 	// remove bottom row

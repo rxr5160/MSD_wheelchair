@@ -263,10 +263,15 @@ int main(int argc, char *argv[]) {
 					x_val = steer(4);
 					y_val = forward(x_val);
 					break;
+				case 5:
+					//wall - stop
+					x_val = 0;
+					y_val = 0;
+					break;
 				default:
-					//forward again
-					x_val = steer(0);
-					y_val = forward(x_val);
+					//stop
+					x_val = 0;
+					y_val = 0;
 					break;
 			}
             cout << x_val << " " << y_val << "\n";

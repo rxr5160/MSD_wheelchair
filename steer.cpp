@@ -6,15 +6,6 @@
  *
 **/
 
-// ** Thoughts on including float/math/floor functions **
-//using floor function to get to 0 steering rather than possibly get stuck at 1
-// might not be needed because of int injection
-//	if bunch of zeros are injected becuase it's clear in front it would be fine
-//	0, 50, or 100 values -> would not be an issue
-//	will leave for saftey
-//#include <cmath>
-//#include <ctgmath>
-
 #include <iostream>
 
 #define MAXTURN 100
@@ -27,9 +18,6 @@
 // once side near object is clear
 // base off center to steer other way until center is clear
 // then continue forward
-
-// I think our speeds will be slow enough that a gradual reduction of
-//	steering isnt really needed
 
 //averge turns to straighten out - PID light
 static int last_turns[PID_SIZE] = {0};
