@@ -20,11 +20,13 @@ bool Init_Arduino(){
     arduino = open(ARDUINO_TTY, O_RDWR | O_NOCTTY | O_SYNC);
     if(arduino < 0){
         fprintf(stdout, "Failed to open file %d, %s\n", errno, strerror(errno));
-        return 0;
+        return false;
     }
 
     set_interface_attribs (B9600, 0);  // set speed to 9600 bps, 8n1 (no parity)
     set_blocking (0);                // set no blocking
+
+    return true;
 
 }
 

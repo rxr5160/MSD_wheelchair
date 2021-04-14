@@ -13,7 +13,7 @@
 
 // global variables //
 bool reset_pose = false;
-int node_num = 0; //starting/current node idx
+int node_num = 1; //starting/current node idx
 int distance_traveled = 0; //total distance gone
 int distance_togo = 0; //distance to next node
 /// start and end positions
@@ -152,8 +152,11 @@ int main(int argc, char *argv[]) {
 						g_running = false;
                     }
                     //else continue to next node
-					next_dist(result);
-					reset_pose = true;
+
+                    //next_dist(result);
+                    else {
+					    reset_pose = true;
+                    }
                     moving = false;
 				} // end reached
 				// still traveling
@@ -175,6 +178,11 @@ int main(int argc, char *argv[]) {
 
                 // Reset pose when needed @ node
                 if(reset_pose){
+                    //
+                    // send stop signal, waiting on turn
+                    //
+                    send_arduino_cmd(0, 0);
+
 					//TODO
 					// Turn check on angle - reach goal so not a high priority
 					// comment is example for reading from gyro
@@ -201,6 +209,8 @@ int main(int argc, char *argv[]) {
                     cin >> waiter;
                     pipe.start(t265_config);
                     reset_pose = false;
+
+	                node_num++; //increment path index
 					next_dist(result);
                 } //end reset pose block
             } //end pose frame block
@@ -259,6 +269,7 @@ int main(int argc, char *argv[]) {
 					y_val = forward(x_val);
 					break;
 			}
+            cout << x_val << " " << y_val << "\n";
             #endif
             #endif
 			#endif
@@ -284,7 +295,7 @@ bool is_number(const std::string& s) {
 
 //check distance to next node in pathing
 void next_dist(BasePath* result) {
-	node_num++; //increment path index
+	//node_num++; //increment path index
 	int d = result->GetVertex(node_num)->Weight(); //distance to next node
 	distance_togo = d - distance_traveled;
 }

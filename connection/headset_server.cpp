@@ -18,7 +18,7 @@
 int main () {
     //  Prepare our context and socket
     zmq::context_t context(1);
-    zmq::socket_t socket (context, ZMQ_REP);
+    zmq::socket_t socket (context, ZMQ_PAIR);
 
     int ret = zmq_bind((void *)socket, ADDR);
     if(ret < 0){
