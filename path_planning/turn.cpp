@@ -30,7 +30,7 @@ int read_directions() {
 		getline(dir_file, header); //burn header line
         //cout << line;
 		char *c;
-		char *s = (char*)malloc (sizeof(line.c_str()));
+		char *s = (char*)malloc (12);
         //cout << s;
 		while(getline(dir_file, line)) {
 		    strcpy(s, line.c_str());//, sizeof(line.c_str()));
@@ -95,7 +95,7 @@ int main(){
 	}
 	else {
 		cout << "read success\n";
-		r = get_direction(0, 1, 2);
+		r = get_direction(11, 9, 10);
 		if (r == -1) {
 			cout << "left turn\n";
 		}
