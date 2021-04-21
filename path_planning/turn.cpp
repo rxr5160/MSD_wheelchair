@@ -95,13 +95,16 @@ int main(){
 	}
 	else {
 		cout << "read success\n";
-		r = get_direction(11, 9, 10);
+		r = get_direction(7, 9, 10);
 		if (r == -1) {
 			cout << "left turn\n";
 		}
 		else if (r == 1) {
 			cout << "right turn\n";
 		}
+        else if(r == 0){
+            cout << "straight\n";
+        }
 		else {
 			cout << "ERROR turn\n";
 		}
