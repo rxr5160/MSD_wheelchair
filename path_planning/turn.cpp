@@ -31,20 +31,19 @@ int read_directions() {
         //cout << line;
 		char *c;
 		char *s = (char*)malloc (sizeof(line.c_str()));
-		//strncpy(s, line.c_str(), sizeof(line.c_str()));
-        cout << s;
+        //cout << s;
 		while(getline(dir_file, line)) {
 		    strcpy(s, line.c_str());//, sizeof(line.c_str()));
             //cout << line;
 			direct_t *a = (direct_t*)malloc(sizeof(direct_t));
 			c = strtok(s, " ");
-            cout << c;
+            //cout << c;
 			a->prev = atoi(c);
 			c = strtok(NULL, " ");
-            cout << c;
+            //cout << c;
 			a->curr = atoi(c);
 			c = strtok(NULL, " ");
-			cout << c;
+			//cout << c;
             a->next = atoi(c);
 			c = strtok(NULL, "\n");
 			switch (*c) {
@@ -63,6 +62,7 @@ int read_directions() {
 					break;
 			} //end switch
 			dir_list[idx] = a;
+			idx++;
 		}// end file read
 		dir_file.close();
 	} //end file
