@@ -6,7 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <string>
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 using namespace std;
@@ -14,7 +14,7 @@ using namespace std;
 typedef struct direct_t {
 	int prev;
 	int curr;
-	int next; 
+	int next;
 	int dir;  //1 right, -1 left, 0 straight
 } direct_t;
 
@@ -26,22 +26,29 @@ int read_directions() {
 	dir_file.open("directions",ios::in);
 	if (dir_file.is_open()) {
 		string line;
-		getline(dir_file, line); //burn header line
-		char c;
-		char *s;
-		strcpy(s, line.c_str());
+        string header;
+		getline(dir_file, header); //burn header line
+        //cout << line;
+		char *c;
+		char *s = (char*)malloc (sizeof(line.c_str()));
+		//strncpy(s, line.c_str(), sizeof(line.c_str()));
+        cout << s;
 		while(getline(dir_file, line)) {
-			direct_t *a = new direct_t;
-
-			c = *strtok(s, " \n");
-			a->prev = atoi(&c);
-			c = *strtok(NULL, " \n");
-			a->curr = atoi(&c);
-			c = *strtok(NULL, " \n");
-			a->next = atoi(&c);
-			c = *strtok(NULL, " \n");
-			switch (c) {
-				case 'L': 
+		    strcpy(s, line.c_str());//, sizeof(line.c_str()));
+            //cout << line;
+			direct_t *a = (direct_t*)malloc(sizeof(direct_t));
+			c = strtok(s, " ");
+            cout << c;
+			a->prev = atoi(c);
+			c = strtok(NULL, " ");
+            cout << c;
+			a->curr = atoi(c);
+			c = strtok(NULL, " ");
+			cout << c;
+            a->next = atoi(c);
+			c = strtok(NULL, "\n");
+			switch (*c) {
+				case 'L':
 					a->dir = -1;
 					break;
 				case 'R':
@@ -77,7 +84,7 @@ int get_direction(int prev, int curr, int next) {
 				} //end next
 			} //end prev
 		} //end curr
-	} //end list 
+	} //end list
 	return 2; //error - unknown direction
 }
 
