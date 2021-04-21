@@ -203,8 +203,7 @@ int main(int argc, char *argv[]) {
                     std::this_thread::sleep_for(std::chrono::seconds(1));
                     /// wait for turn
                     cout << "press any key and then ENTER once turned to face node ID ";
-                        cout << (node_num + 1);
-                        cout << "\r\n";
+                        cout << result->GetVertex(node_num + 1)->getID() << "\r\n";
                     int waiter;
                     cin >> waiter;
                     pipe.start(t265_config);

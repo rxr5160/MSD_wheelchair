@@ -47,4 +47,6 @@
 #include "connection/arduino_serial.h"
 #include "steer.h"
 
+extern bool g_running;
+
 #endif /* WHEELCHAIR_H */
