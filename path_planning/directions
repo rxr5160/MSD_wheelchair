@@ -33,6 +33,5 @@ Prev Node - Curr Node - Next Node - Direction
 11 9 10 R
 9 11 12 R
 12 11 9 L
-
 1 12 11 R
 11 12 1 L
