@@ -95,6 +95,14 @@ int main(int argc, char *argv[]) {
 	//result->PrintOut(cout); // debug statment
 	next_dist(result); // get distance to check against for next node distance
 
+	///
+	/// turn stuffs
+	///
+	int read_ret = read_directions();
+	if(read_ret == 1) { //error check
+		std::cout << "ERROR reading directions for node turns\n";
+	}
+
 
 	//start running
 	g_running = true;
@@ -143,6 +151,11 @@ int main(int argc, char *argv[]) {
 					cout << "!! Reached node ID ";
                         cout << result->GetVertex(node_num)->getID();
                         cout << "\r\n";
+
+					///
+					/// TODO prev, curr, next for turn decicions
+					/// might need part at lines ~220 for turn info
+
 					// distance_traveled will equal total node wight from graph
 					distance_traveled = distance_traveled + distance_togo;
                     //check if at destination

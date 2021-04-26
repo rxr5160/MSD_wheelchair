@@ -46,6 +46,7 @@
 #include "path_planning/DijkstraShortestPathAlg.h"
 #include "connection/arduino_serial.h"
 #include "steer.h"
+#include "path_planning/turn.h"
 
 extern bool g_running;
 
