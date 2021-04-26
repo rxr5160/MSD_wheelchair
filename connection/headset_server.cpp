@@ -27,6 +27,8 @@ zmq::context_t context(1);
 zmq::socket_t socket(context, ZMQ_PAIR);
 
 
+//Does not currently work.
+//Something that could be fixed in the future
 void user_interrupt(){
     zmq::message_t msg;
     std::string stopped ="{\"State\": \"STOPPED\", \
@@ -61,8 +63,23 @@ void user_interrupt(){
     }
 }
 
-//void Init_Headset(){
+void send_reached_destination(){
+    //TODO Create Message of State : STOPPED, Reason: Destination Reached
+    /*Json::Value root;
+    Json::Reader reader;
+    reader.parse(stopped.c_str(), root);
+    Json::FastWriter fastwriter;
+    std::string message = fastwriter.write(root);
+    zmq::message_t rq (message.size());
+    memcpy(rq.data(), message.c_str(), message.size());
+    socket.send(rq);*/
+}
+
+//int Init_Headset(int start_node){
 int main () {
+    int node = 0;
+    int start_node = 5;
+    zmq::message_t msg;
     //  Prepare our context and socket
     int ret = zmq_bind((void *)socket, ADDR);
 
@@ -70,20 +87,35 @@ int main () {
         std::cout << "Failed to bind socket\r\n";
     }
 
+    //Receive Connection Confirmation
+    socket.recv(&msg);
+    std::string rpl = std::string(static_cast<char*>(msg.data()), msg.size());
 
-    while (g_running) {
-       // zmq::message_t request;
-        user_interrupt();
-        //  Wait for next request from client
-        //socket.recv (&request);
-        //std::cout << "Received Hello" << std::endl;
+    Json::Value parsedFromString;
+    Json::Reader reader;
+    bool parsingSuccessful = reader.parse(rpl, parsedFromString);
 
-
-        //  Send reply back to client
-        //zmq::message_t reply (5);
-        //memcpy ((void *) reply.data (), "World", 5);
-        //socket.send(reply);
+    std::cout << parsedFromString["State"];
+    if(parsedFromString["State"] != "CONNECTED"){
+        std::cout << "Invalid State Received\r\n";
+        return -1;
     }
-    socket.close();
-    return 0;
+
+    socket.recv(&msg);
+    rpl = std::string(static_cast<char*>(msg.data()), msg.size());
+    parsingSuccessful = reader.parse(rpl, parsedFromString);
+    if(parsedFromString["MoveTo"] != NULL){
+        //TODO Get int from Json::Value
+        node = parsedFromString["MoveTo"];
+        if(node == start_node){
+            send_reached_destination();
+            return -2;
+        }
+    }
+    else{
+        std::cout << "Invalid check\r\n";
+        return -1;
+    }
+
+    return node;
 }

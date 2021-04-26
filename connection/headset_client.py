@@ -2,7 +2,6 @@ import zmq
 import time
 import json
 
-
 ctx = zmq.Context.instance()
 socket = ctx.socket(zmq.PAIR)
 socket.connect("tcp://129.21.118.204:4321")
@@ -21,9 +20,8 @@ socket.send(get_json_bytes(msg))
 print(f"Sent {msg}")
 time.sleep(5)
 
-
-json_str = socket.recv_json()
-print(f"Received {json_str}");
+##json_str = socket.recv_json()
+##print(f"Received {json_str}");
 
 msg = {
     "MoveTo": 5
