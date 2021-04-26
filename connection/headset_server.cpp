@@ -20,22 +20,43 @@
 //#include "../wheelchair.h"
 //#include "arduino_serial.h"
 
-#define ADDR "tcp://129.21.118.106:4321"
+#define ADDR "tcp://129.21.118.204:4321"
 
 bool g_running = true;
 zmq::context_t context(1);
 zmq::socket_t socket(context, ZMQ_PAIR);
 
+
 void user_interrupt(){
     zmq::message_t msg;
+    std::string stopped ="{\"State\": \"STOPPED\", \
+                           \"Reason\": \"User Request\"}";
+    std::string start = "{\"State\": \"MOVING\", \
+                           \"Reason\": \"User Request\"}";
 
     while(g_running){
-        socket.recv(&msg, ZMQ_NOBLOCK);
+        bool ret = socket.recv(&msg, ZMQ_NOBLOCK);
+        //msg = socket.recv(flags = ZMQ_NOBLOCK);
         if(errno == EAGAIN){
             break;
         }
+        else if(!ret){
+            std::cout << "Bad\r\n";
+        }
         else{
-            std::string json_str =
+            std::string rpl = std::string(static_cast<char*>(msg.data()), msg.size());
+
+            std::cout << rpl << std::endl;
+
+            Json::Value root;
+            Json::Reader reader;
+            reader.parse(stopped.c_str(), root);
+            Json::FastWriter fastwriter;
+            std::string message = fastwriter.write(root);
+            zmq::message_t rq (message.size());
+            memcpy(rq.data(), message.c_str(), message.size());
+            socket.send(rq);
+            break;
         }
     }
 }
