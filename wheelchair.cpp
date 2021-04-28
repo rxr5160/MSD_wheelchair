@@ -235,13 +235,9 @@ int main(int argc, char *argv[]) {
 
                     pipe.stop();
                     std::this_thread::sleep_for(std::chrono::seconds(1));
-					
+
 					//determine turn
 					int turn_direction = get_direction(prev_ID, curr_ID, next_ID);
-					// set new node IDs 
-					prev_ID = curr_ID;
-					curr_ID = next_ID;
-					next_ID = result->GetVertex(node_num+1)->getID();
 
 					switch (turn_direction) {
 						case -1:
@@ -263,8 +259,8 @@ int main(int argc, char *argv[]) {
                     cin >> waiter;
                     pipe.start(t265_config);
                     reset_pose = false;
-					
-					// set new node IDs 
+
+					// set new node IDs
 					prev_ID = curr_ID;
 					curr_ID = next_ID;
 					if (curr_ID != end_node) {
