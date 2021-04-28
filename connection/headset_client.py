@@ -4,7 +4,7 @@ import json
 
 ctx = zmq.Context.instance()
 socket = ctx.socket(zmq.PAIR)
-socket.connect("tcp://129.21.118.204:4321")
+socket.connect("tcp://*:4321")
 print("connected")
 
 def get_json_bytes(message: dict) -> bytes:
@@ -24,9 +24,12 @@ time.sleep(5)
 ##print(f"Received {json_str}");
 
 msg = {
-    "MoveTo": 5
+    "MoveTo": 7
 }
 socket.send(get_json_bytes(msg))
 print(f"Sent {msg}")
+
+ret = socket.recv()
+print(ret)
 
 socket.close()

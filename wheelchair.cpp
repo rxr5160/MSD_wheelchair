@@ -43,16 +43,21 @@ int main(int argc, char *argv[]) {
 	signal(SIGINT, signalHandler);
 
 	// get arguments for start and end nodes
-	if (argc < 3) {
-		cout << "Include a start and end node before running\r\n\tEX: ./wheelchair 0 6\r\n";
+	if (argc < 2) {
+		cout << "Include a start and end node before running\r\n\tEX: ./wheelchair 0\r\n";
 		return 1;
 	}
 	else {
-		if (is_number(argv[1]) && is_number(argv[2])) {
+		if (is_number(argv[1])) {
 			start_node = atoi(argv[1]);
-			end_node = atoi(argv[2]);
 		}
 	} //end argument collection
+
+    end_node = Init_Headset(start_node);
+    if(end_node < 0){
+        std::cout << "Headset connection errored\r\n";
+        return 1;
+    }
 
     bool moving = false;
     int x_val = 0;
@@ -161,6 +166,7 @@ int main(int argc, char *argv[]) {
                     //check if at destination
                     if (result->GetVertex(node_num)->getID() == end_node){
                         cout << "You made it!\r\n";
+                        send_reached_destination();
                         //return 0;
 						g_running = false;
                     }

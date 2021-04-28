@@ -17,69 +17,78 @@
 #include <exception>
 #include <errno.h>
 
-//#include "../wheelchair.h"
-//#include "arduino_serial.h"
+#include "../wheelchair.h"
+#include "headset_server.h"
 
-#define ADDR "tcp://129.21.118.204:4321"
+#define ADDR "tcp://*:4321"
 
-bool g_running = true;
 zmq::context_t context(1);
 zmq::socket_t socket(context, ZMQ_PAIR);
 
-
-//Does not currently work.
-//Something that could be fixed in the future
+std::string finished ="{\"State\": \"STOPPED\", \
+                           \"Reason\": \"Destination Reached\"}";
+std::string stopped ="{\"State\": \"STOPPED\", \
+                           \"Reason\": \"User Request\"}";
+std::string start = "{\"State\": \"MOVING\", \
+                           \"Reason\": \"User Request\"}";
+std::string invalid = "{\"State\": \"NULL\", \
+                           \"Reason\": \"Invalid Request\"}";
+/*
+ * TODO This option does not currently work
+ *      issue comes from no blocking recv
+ *      to be fixed at a later date.
+ */
 void user_interrupt(){
     zmq::message_t msg;
-    std::string stopped ="{\"State\": \"STOPPED\", \
-                           \"Reason\": \"User Request\"}";
-    std::string start = "{\"State\": \"MOVING\", \
-                           \"Reason\": \"User Request\"}";
+    Json::Value root;
+    Json::Value parsedFromString;
+    Json::Reader reader;
+    Json::FastWriter fastwriter;
 
     while(g_running){
-        bool ret = socket.recv(&msg, ZMQ_NOBLOCK);
-        //msg = socket.recv(flags = ZMQ_NOBLOCK);
+        socket.recv(&msg, ZMQ_NOBLOCK);
         if(errno == EAGAIN){
             break;
         }
-        else if(!ret){
-            std::cout << "Bad\r\n";
-        }
         else{
             std::string rpl = std::string(static_cast<char*>(msg.data()), msg.size());
-
-            std::cout << rpl << std::endl;
-
-            Json::Value root;
-            Json::Reader reader;
-            reader.parse(stopped.c_str(), root);
-            Json::FastWriter fastwriter;
-            std::string message = fastwriter.write(root);
-            zmq::message_t rq (message.size());
-            memcpy(rq.data(), message.c_str(), message.size());
-            socket.send(rq);
-            break;
+            reader.parse(rpl, parsedFromString);
+            if(parsedFromString["Command"] == "STOP"){
+                reader.parse(stopped.c_str(), root);
+                std::string message = fastwriter.write(root);
+                zmq::message_t rq (message.size());
+                memcpy(rq.data(), message.c_str(), message.size());
+                socket.send(rq);
+                //this should stay in while loop here
+                // until start message is received
+            }
+            else if(parsedFromString["Command"] == "START"){
+                reader.parse(start.c_str(), root);
+                std::string message = fastwriter.write(root);
+                zmq::message_t rq (message.size());
+                memcpy(rq.data(), message.c_str(), message.size());
+                socket.send(rq);
+                break;
+            }
         }
     }
 }
 
 void send_reached_destination(){
-    //TODO Create Message of State : STOPPED, Reason: Destination Reached
-    /*Json::Value root;
+    Json::Value root;
     Json::Reader reader;
-    reader.parse(stopped.c_str(), root);
+    reader.parse(finished.c_str(), root);
     Json::FastWriter fastwriter;
     std::string message = fastwriter.write(root);
     zmq::message_t rq (message.size());
     memcpy(rq.data(), message.c_str(), message.size());
-    socket.send(rq);*/
+    socket.send(rq);
 }
 
-//int Init_Headset(int start_node){
-int main () {
+int Init_Headset(int start_node){
     int node = 0;
-    int start_node = 5;
     zmq::message_t msg;
+
     //  Prepare our context and socket
     int ret = zmq_bind((void *)socket, ADDR);
 
@@ -93,29 +102,29 @@ int main () {
 
     Json::Value parsedFromString;
     Json::Reader reader;
-    bool parsingSuccessful = reader.parse(rpl, parsedFromString);
+    reader.parse(rpl, parsedFromString);
 
+    //Parse for connected message
     std::cout << parsedFromString["State"];
     if(parsedFromString["State"] != "CONNECTED"){
         std::cout << "Invalid State Received\r\n";
         return -1;
     }
 
+    //Receive destination node
     socket.recv(&msg);
     rpl = std::string(static_cast<char*>(msg.data()), msg.size());
-    parsingSuccessful = reader.parse(rpl, parsedFromString);
-    if(parsedFromString["MoveTo"] != NULL){
-        //TODO Get int from Json::Value
-        node = parsedFromString["MoveTo"];
+    reader.parse(rpl, parsedFromString);
+    if(parsedFromString["MoveTo"].asBool()){
+        node = parsedFromString["MoveTo"].asInt();
         if(node == start_node){
             send_reached_destination();
             return -2;
         }
     }
     else{
-        std::cout << "Invalid check\r\n";
+        std::cout << "Invalid Json Message\r\n";
         return -1;
     }
-
     return node;
 }

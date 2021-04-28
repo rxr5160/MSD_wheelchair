@@ -45,6 +45,7 @@
 #include "path_planning/Graph.h"
 #include "path_planning/DijkstraShortestPathAlg.h"
 #include "connection/arduino_serial.h"
+#include "connection/headset_server.h"
 #include "steer.h"
 #include "path_planning/turn.h"
 
