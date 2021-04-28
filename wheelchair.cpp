@@ -54,6 +54,7 @@ int main(int argc, char *argv[]) {
 	else {
 		if (is_number(argv[1])) {
 			start_node = atoi(argv[1]);
+			end_node = atoi(argv[2]);
 		}
 	} //end argument collection
 
@@ -119,7 +120,12 @@ int main(int argc, char *argv[]) {
 	// set turn ID variables -> get adjusted in turn for each subsequent turn
 	prev_ID = start_node;
 	curr_ID = result->GetVertex(node_num)->getID();
-	next_ID = result->GetVertex(node_num+1)->getID();
+	if (curr_ID != end_node) {
+		next_ID = result->GetVertex(node_num+1)->getID();
+	}
+	else {
+		next_ID = curr_ID; //will not be used again
+	}
 	//
     // main loop that interfaces with cameras and makes decisions
 	//
@@ -229,11 +235,10 @@ int main(int argc, char *argv[]) {
 
                     pipe.stop();
                     std::this_thread::sleep_for(std::chrono::seconds(1));
-
+					
 					//determine turn
 					int turn_direction = get_direction(prev_ID, curr_ID, next_ID);
-                    cout << turn_direction << "//\n";
-					// set new node IDs
+					// set new node IDs 
 					prev_ID = curr_ID;
 					curr_ID = next_ID;
 					next_ID = result->GetVertex(node_num+1)->getID();
@@ -258,7 +263,16 @@ int main(int argc, char *argv[]) {
                     cin >> waiter;
                     pipe.start(t265_config);
                     reset_pose = false;
-
+					
+					// set new node IDs 
+					prev_ID = curr_ID;
+					curr_ID = next_ID;
+					if (curr_ID != end_node) {
+						next_ID = result->GetVertex(node_num+1)->getID();
+					}
+					else {
+						next_ID = curr_ID; //will not be used again
+					}
 	                node_num++; //increment path index
 					next_dist(result);
                 } //end reset pose block
