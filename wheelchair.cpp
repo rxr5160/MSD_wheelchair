@@ -58,8 +58,8 @@ int main(int argc, char *argv[]) {
 		}
 	} //end argument collection
 
-    end_node = 8;
-    //end_node = Init_Headset(start_node);
+    //end_node = 8;
+    end_node = Init_Headset(start_node);
     if(end_node < 0){
         std::cout << "Headset connection errored\r\n";
         return 1;
@@ -130,10 +130,6 @@ int main(int argc, char *argv[]) {
     // main loop that interfaces with cameras and makes decisions
 	//
 	while(g_running){
-		//debug prints
-		cout << "prev = " << prev_ID << " curr = " << curr_ID << " next = " << next_ID << "\n";
-
-
         for (auto &&pipe : pipelines){ // loop over pipelines
             // Wait for the next set of frames from the camera
             auto frames = pipe.wait_for_frames();
@@ -181,7 +177,7 @@ int main(int argc, char *argv[]) {
                     //check if at destination
                     if (result->GetVertex(node_num)->getID() == end_node){
                         cout << "You made it!\r\n";
-                        //send_reached_destination();
+                        send_reached_destination();
                         //return 0;
 						g_running = false;
                     }

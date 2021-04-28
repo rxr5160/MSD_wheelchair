@@ -20,7 +20,7 @@
 #include "../wheelchair.h"
 #include "headset_server.h"
 
-#define ADDR "tcp://*:4321"
+#define ADDR "tcp://127.0.0.1:4321"
 
 zmq::context_t context(1);
 zmq::socket_t socket(context, ZMQ_PAIR);
@@ -105,7 +105,6 @@ int Init_Headset(int start_node){
     reader.parse(rpl, parsedFromString);
 
     //Parse for connected message
-    std::cout << parsedFromString["State"];
     if(parsedFromString["State"] != "CONNECTED"){
         std::cout << "Invalid State Received\r\n";
         return -1;
