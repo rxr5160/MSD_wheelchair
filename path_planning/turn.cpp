@@ -89,7 +89,7 @@ int get_direction(int prev, int curr, int next) {
 }
 
 //test main
-/**
+/*
 int main(){
 	int r = read_directions();
 	if (r != 0) {
@@ -97,7 +97,7 @@ int main(){
 	}
 	else {
 		cout << "read success\n";
-		r = get_direction(7, 9, 10);
+		r = get_direction(0, 1, 2);
 		if (r == -1) {
 			cout << "left turn\n";
 		}
