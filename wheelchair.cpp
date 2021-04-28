@@ -21,6 +21,10 @@ int start_node;
 int end_node;
 //boolean for main while - use to clean exit on destination reached
 bool g_running;
+// node IDs for turning requirement
+int prev_ID;
+int curr_ID;
+int next_ID;
 
 // private function prototypes
 BasePath* get_shortest_path(string map, int start, int end);
@@ -111,10 +115,18 @@ int main(int argc, char *argv[]) {
 
 	//start running
 	g_running = true;
+	// set turn ID variables -> get adjusted in turn for each subsequent turn
+	prev_ID = start_node;
+	curr_ID = result->GetVertex(node_num)->get_ID();
+	next_ID = result->GetVertex(node_num+1)->get_ID();
 	//
     // main loop that interfaces with cameras and makes decisions
 	//
 	while(g_running){
+		//debug prints
+		cout << "prev = " << prev_ID << " curr = " << curr_ID << " next = " << next_ID << "\n";
+
+
         for (auto &&pipe : pipelines){ // loop over pipelines
             // Wait for the next set of frames from the camera
             auto frames = pipe.wait_for_frames();
@@ -156,10 +168,6 @@ int main(int argc, char *argv[]) {
 					cout << "!! Reached node ID ";
                         cout << result->GetVertex(node_num)->getID();
                         cout << "\r\n";
-
-					///
-					/// TODO prev, curr, next for turn decicions
-					/// might need part at lines ~220 for turn info
 
 					// distance_traveled will equal total node wight from graph
 					distance_traveled = distance_traveled + distance_togo;
@@ -220,9 +228,30 @@ int main(int argc, char *argv[]) {
 
                     pipe.stop();
                     std::this_thread::sleep_for(std::chrono::seconds(1));
-                    /// wait for turn
-                    cout << "press any key and then ENTER once turned to face node ID ";
-                        cout << result->GetVertex(node_num + 1)->getID() << "\r\n";
+					
+					//determine turn
+					int turn_direction = get_direction(prev_ID, curr_ID, next_ID);
+					// set new node IDs 
+					prev_ID = curr_ID;
+					curr_ID = next_ID;
+					next_ID = result->GetVertex(node_num+1)->getID();
+
+					switch (turn_direction) {
+						case -1:
+                    		cout << "press any key and then ENTER, once turned LEFT.\n";
+							break;
+						case 0:
+                    		cout << "press any key and then ENTER, going STRAIGHT.\n";
+							break;
+						case 1:
+                    		cout << "press any key and then ENTER, once turned RIGHT";
+							break;
+						defualt:
+							cout << "problem in determining turn.\n";
+							break;
+					}
+
+					//wait for input to confirm turn completed
                     int waiter;
                     cin >> waiter;
                     pipe.start(t265_config);
