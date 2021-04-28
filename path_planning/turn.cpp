@@ -88,6 +88,8 @@ int get_direction(int prev, int curr, int next) {
 	return 2; //error - unknown direction
 }
 
+//test main
+/**
 int main(){
 	int r = read_directions();
 	if (r != 0) {
@@ -110,4 +112,4 @@ int main(){
 		}
 	}
 }
-
+*/
