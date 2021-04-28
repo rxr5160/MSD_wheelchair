@@ -5,6 +5,9 @@ wheelchair -> main</br>
 left_right -> object detection</br>
 steering -> steering and acceleration control</br>
 path_planning/ -> contains pathing files and map graph, runs Dijkstra shortest path</br>
+	turn
+	dijstra
+	distance and direction maps
 connection/ -> contains communcation code</br>
 build.sh -> compiles system, bypass a makefile to run the command in shell</br>
 
@@ -43,6 +46,10 @@ Several macros are used in debug for object detection
 - ABS, prints average distance for each quadrent
 - DET, prints quadrents with marks for threshold detection in each
 - PDBG, prints signal it would want to send, turn left/turn right
+
+Turning currently segfaults (4/28) <br>
+System Errors if going from one node to neighboring node - distance of 1
+
 
 Steering uses a quick and dirty PID of 10 elements to smooth steering, adjust size as needed (PID_SIZE in steering.cpp)
 
