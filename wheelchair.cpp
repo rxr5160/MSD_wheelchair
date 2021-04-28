@@ -57,7 +57,8 @@ int main(int argc, char *argv[]) {
 		}
 	} //end argument collection
 
-    end_node = Init_Headset(start_node);
+    end_node = 8;
+    //end_node = Init_Headset(start_node);
     if(end_node < 0){
         std::cout << "Headset connection errored\r\n";
         return 1;
@@ -66,10 +67,10 @@ int main(int argc, char *argv[]) {
     bool moving = false;
     int x_val = 0;
     int y_val = 0;
-    if(!Init_Arduino()){
-        std::cout << "Failed to connect to arduino\r\n";
-        return 1;
-    }
+    //if(!Init_Arduino()){
+    //    std::cout << "Failed to connect to arduino\r\n";
+    //    return 1;
+    //}
 
 
 	//set up cameras
@@ -117,8 +118,8 @@ int main(int argc, char *argv[]) {
 	g_running = true;
 	// set turn ID variables -> get adjusted in turn for each subsequent turn
 	prev_ID = start_node;
-	curr_ID = result->GetVertex(node_num)->get_ID();
-	next_ID = result->GetVertex(node_num+1)->get_ID();
+	curr_ID = result->GetVertex(node_num)->getID();
+	next_ID = result->GetVertex(node_num+1)->getID();
 	//
     // main loop that interfaces with cameras and makes decisions
 	//
@@ -174,7 +175,7 @@ int main(int argc, char *argv[]) {
                     //check if at destination
                     if (result->GetVertex(node_num)->getID() == end_node){
                         cout << "You made it!\r\n";
-                        send_reached_destination();
+                        //send_reached_destination();
                         //return 0;
 						g_running = false;
                     }
@@ -208,7 +209,7 @@ int main(int argc, char *argv[]) {
                     //
                     // send stop signal, waiting on turn
                     //
-                    send_arduino_cmd(0, 0);
+                    ////send_arduino_cmd(0, 0);
 
 					//TODO
 					// Turn check on angle - reach goal so not a high priority
@@ -228,10 +229,11 @@ int main(int argc, char *argv[]) {
 
                     pipe.stop();
                     std::this_thread::sleep_for(std::chrono::seconds(1));
-					
+
 					//determine turn
 					int turn_direction = get_direction(prev_ID, curr_ID, next_ID);
-					// set new node IDs 
+                    cout << turn_direction << "//\n";
+					// set new node IDs
 					prev_ID = curr_ID;
 					curr_ID = next_ID;
 					next_ID = result->GetVertex(node_num+1)->getID();
@@ -332,9 +334,9 @@ int main(int argc, char *argv[]) {
             x_val = 0;
             y_val = 0;
         }
-        send_arduino_cmd(x_val, y_val);
+        //send_arduino_cmd(x_val, y_val);
 	} //end loop
-	cleanup_arduino();
+	//cleanup_arduino();
     return 0;
 } //end main
 
