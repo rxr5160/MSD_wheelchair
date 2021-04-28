@@ -23,7 +23,7 @@ static direct_t* dir_list[36];
 int read_directions() {
 	int idx = 0;
 	ifstream dir_file;
-	dir_file.open("directions",ios::in);
+	dir_file.open("path_planning/directions",ios::in);
 	if (dir_file.is_open()) {
 		string line;
         string header;
