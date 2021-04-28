@@ -16,6 +16,7 @@ build.sh -> compiles system, bypass a makefile to run the command in shell</br>
 
 - set global variables
 	- next node idx
+	- turning nodes -> prev, current, next IDs
 	- total distnace traveled
 	- distnace togo to next node
 	- reset flag, boolean
@@ -31,6 +32,8 @@ build.sh -> compiles system, bypass a makefile to run the command in shell</br>
 		- set reset
 	- if reset
 		- reset camera pose
+		- tell direction to turn
+		- move turning node IDs forward
 		- clear reset
 	- check depth camera
 		- adjust turn and acceleration signals as needed
@@ -46,9 +49,6 @@ Several macros are used in debug for object detection
 - ABS, prints average distance for each quadrent
 - DET, prints quadrents with marks for threshold detection in each
 - PDBG, prints signal it would want to send, turn left/turn right
-
-Turning currently segfaults (4/28) <br>
-System Errors if going from one node to neighboring node - distance of 1
 
 
 Steering uses a quick and dirty PID of 10 elements to smooth steering, adjust size as needed (PID_SIZE in steering.cpp)
