@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
 	else {
 		if (is_number(argv[1])) {
 			start_node = atoi(argv[1]);
-			end_node = atoi(argv[2]);
+			//end_node = atoi(argv[2]);
 		}
 	} //end argument collection
 
@@ -253,6 +253,7 @@ int main(int argc, char *argv[]) {
 							cout << "problem in determining turn.\n";
 							break;
 					}
+                    cout << std::flush;
 
 					//wait for input to confirm turn completed
                     int waiter;
