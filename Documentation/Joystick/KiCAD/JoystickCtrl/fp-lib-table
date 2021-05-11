@@ -1,0 +1,5 @@
+(fp_lib_table
+  (lib (name 16-SOT-23-THIN)(type KiCad)(uri "C:/Users/Sid Davis/OneDrive/Documents/KiCAD Libraries/TMUX1574DYYR/footprints.pretty")(options "")(descr "Intended for TMUX1574DYYR"))
+  (lib (name Conn_02x04_p2mm)(type KiCad)(uri "C:/Users/Sid Davis/OneDrive/Documents/KiCAD Libraries/Conn_02x04_p2mm.pretty")(options "")(descr "Through Hole 8 position 0.079\" (2.00mm)"))
+  (lib (name MSD_logo)(type KiCad)(uri ${KIPRJMOD}/Clipart/PCB-logo.pretty)(options "")(descr "NXT + MDRC = Wheelchair"))
+)

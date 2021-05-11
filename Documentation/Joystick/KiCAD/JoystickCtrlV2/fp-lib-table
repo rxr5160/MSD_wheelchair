@@ -1,0 +1,6 @@
+(fp_lib_table
+  (lib (name AD5242BRZ10)(type KiCad)(uri ${KIPRJMOD}/local_lib/AD5242BRZ10/footprints.pretty)(options "")(descr "Dual Circuit Digital Potentiometer"))
+  (lib (name MAX4519CSD)(type KiCad)(uri ${KIPRJMOD}/local_lib/MAX4519CSD/footprints.pretty)(options "")(descr "2:1 MUX"))
+  (lib (name TXS0104EDR)(type KiCad)(uri ${KIPRJMOD}/local_lib/TXS0104EDR/footprints.pretty)(options "")(descr "Level Shifter"))
+  (lib (name Logo)(type KiCad)(uri C:/Users/sdavi/OneDrive/RIT/EEEE497_MSD/KiCAD/JoystickCtrl/Clipart/PCB-logo.pretty)(options "")(descr Logo))
+)
