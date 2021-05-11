@@ -1,0 +1,8 @@
+(sym_lib_table
+  (lib (name MAX504CSD)(type Legacy)(uri "C:/Users/Sid Davis/OneDrive/Documents/KiCAD Libraries/MAX504CSD/MAX504CSD.lib")(options "")(descr "10 Bit Digital to Analog Converter 1 14-SOIC"))
+  (lib (name OP284EPZ)(type Legacy)(uri "C:/Users/Sid Davis/OneDrive/Documents/KiCAD Libraries/OP284EPZ/OP284EPZ.lib")(options "")(descr "General Purpose Amplifier 2 Circuit Rail-to-Rail 8-PDIP"))
+  (lib (name RD-0505D)(type Legacy)(uri "C:/Users/Sid Davis/OneDrive/Documents/KiCAD Libraries/RD-0505D/RD-0505D.lib")(options "")(descr "Isolated Module DC DC Converter 2 Output 5V -5V 200mA, 200mA 4.5V - 5.5V Input"))
+  (lib (name TMUX1574DYYR)(type Legacy)(uri "C:/Users/Sid Davis/OneDrive/Documents/KiCAD Libraries/TMUX1574DYYR/TMUX1574DYYR.lib")(options "")(descr "4 Circuit IC Switch 2:1 4.5Ohm 16-SOT-23-THIN"))
+  (lib (name AD8402ARZ1)(type Legacy)(uri "C:/Users/Sid Davis/OneDrive/Documents/KiCAD Libraries/AD8402ARZ1/AD8402ARZ1.lib")(options "")(descr "Digital Potentiometer 1k Ohm 2 Circuit 256 Taps SPI Interface 14-SOIC"))
+  (lib (name JoystickCtrl-rescue)(type Legacy)(uri ${KIPRJMOD}/JoystickCtrl-rescue.lib)(options "")(descr ""))
+)
